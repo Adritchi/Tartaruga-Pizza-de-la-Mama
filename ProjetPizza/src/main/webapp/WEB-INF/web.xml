@@ -1,0 +1,41 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="3.1">
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.HomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CustomizationServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.CustomizationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomizationServlet</servlet-name>
+        <url-pattern>/customize</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.AccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>jsp/home.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
