@@ -1,23 +1,19 @@
 package com.pizzaapp.models;
 
 public class Order {
-    private User user;
+    private int id;
     private Pizza pizza;
 
-    public Order(User user, Pizza pizza) {
-        this.user = user;
+    public Order(int id, Pizza pizza) {
+        this.id = id;
         this.pizza = pizza;
     }
 
-    public User getUser() {
-        return user;
+    public int getId() {
+        return id;
     }
 
     public Pizza getPizza() {
         return pizza;
-    }
-
-    public double getTotalPrice() {
-        return pizza.getTotalPrice();
     }
 }

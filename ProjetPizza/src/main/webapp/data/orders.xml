@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orders>
+    <order id="1">
+        <pizza size="Medium" crust="Classique" sauce="Base Sauce Tomate">
+            <ingredient>Mozzarella</ingredient>
+            <ingredient>Tomates</ingredient>
+            <ingredient>Basilic</ingredient>
+        </pizza>
+    </order>
+    <order id="2">
+        <pizza size="Large" crust="Pâte Fine" sauce="Base Sauce BBQ">
+            <ingredient>Bacon</ingredient>
+            <ingredient>Champignons</ingredient>
+            <ingredient>Oignons</ingredient>
+        </pizza>
+    </order>
+</orders>

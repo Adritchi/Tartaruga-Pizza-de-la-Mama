@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <user id="1" name="John Doe" address="123 Main St" phone="123-456-7890"/>
+    <user id="2" name="Jane Smith" address="456 Elm St" phone="987-654-3210"/>
+</users>
