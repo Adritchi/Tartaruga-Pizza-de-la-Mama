@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Welcome to PizzaApp</h1>
-    <a href="customize">Customize your Pizza</a><br>
-    <a href="account">My Account</a>
+    <a href="customize.jsp">Customize your Pizza</a><br>
+    <a href="account.jsp">My Account</a>
 </body>
 </html>

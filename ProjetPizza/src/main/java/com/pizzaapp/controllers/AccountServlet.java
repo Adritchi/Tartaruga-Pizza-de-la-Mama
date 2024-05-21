@@ -15,9 +15,9 @@ public class AccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("jsp/login.jsp");
         } else {
-            request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/account.jsp").forward(request, response);
         }
     }
 
@@ -29,6 +29,6 @@ public class AccountServlet extends HttpServlet {
 
         User user = new User(name, address, phone);
         request.getSession().setAttribute("user", user);
-        request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/account.jsp").forward(request, response);
     }
 }

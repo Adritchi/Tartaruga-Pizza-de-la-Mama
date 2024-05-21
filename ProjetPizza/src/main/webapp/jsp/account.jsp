@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Account - PizzaApp</title>
+    <title>My Account - PizzaApp</title>
 </head>
 <body>
     <h1>My Account</h1>
