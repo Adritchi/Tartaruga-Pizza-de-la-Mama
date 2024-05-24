@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.pizzaapp.models.Order" %>
 <%@ page import="com.pizzaapp.models.Ingredient" %>
+<%@ page import="com.pizzaapp.models.Pizza" %>
+<%@ page import="com.pizzaapp.models.Order" %>
+<%@ page import="com.pizzaapp.models.User" %>
+<%@ page import="com.pizzaapp.utils.Database" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +15,22 @@
     <div class="header">
         <h1>Your Order</h1>
     </div>
+    <div class="user-greeting">
+            <%
+                User user = (User) session.getAttribute("user");
+                if (user != null) {
+            %>
+                <span class="greeting-text">Bonjour <%= user.getName() %>!</span>
+                <a class="auth-link" href="logout.jsp">Se déconnecter</a>
+            <%
+                } else {
+            %>
+                <a class="auth-link" href="login.jsp">Se connecter</a> |
+                <a class="auth-link" href="register.jsp">S'inscrire</a>
+            <%
+                }
+            %>
+        </div>
     <div class="container">
         <h2>Order Details</h2>
         <%

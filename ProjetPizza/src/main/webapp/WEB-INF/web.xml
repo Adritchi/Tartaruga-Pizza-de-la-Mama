@@ -2,4 +2,45 @@
     <welcome-file-list>
         <welcome-file>jsp/home.jsp</welcome-file>
     </welcome-file-list>
+
+    <listener>
+        <listener-class>com.pizzaapp.listeners.AppContextListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.pizzaapp.filters.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/jsp/account.jsp</url-pattern>
+        <url-pattern>/account</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>com.pizzaapp.controllers.AccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
 </web-app>

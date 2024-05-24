@@ -6,6 +6,7 @@ import com.pizzaapp.models.Pizza;
 import com.pizzaapp.models.User;
 import org.w3c.dom.*;
 
+import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,13 +18,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private static final String DATA_DIR = "ProjetPizza/src/main/webapp/data";
-    private static final String ORDER_FILE_PATH = DATA_DIR + "/orders.xml";
-    private static final String USER_FILE_PATH = DATA_DIR + "/users.xml";
-    private static final String SIZE_FILE_PATH = DATA_DIR + "/sizes.xml";
-    private static final String BASE_FILE_PATH = DATA_DIR + "/bases.xml";
-    private static final String CRUST_FILE_PATH = DATA_DIR + "/crusts.xml";
-    private static final String INGREDIENT_FILE_PATH = DATA_DIR + "/ingredients.xml";
+    private static ServletContext context;
+
+    private static String ORDER_FILE_PATH;
+    private static String USER_FILE_PATH;
+    private static String SIZE_FILE_PATH;
+    private static String BASE_FILE_PATH;
+    private static String CRUST_FILE_PATH;
+    private static String INGREDIENT_FILE_PATH;
+
+    public static void initialize(ServletContext servletContext) {
+    	context = servletContext;
+        ORDER_FILE_PATH = context.getRealPath("/data/orders.xml");
+        USER_FILE_PATH = context.getRealPath("/data/users.xml");
+        SIZE_FILE_PATH = context.getRealPath("/data/sizes.xml");
+        BASE_FILE_PATH = context.getRealPath("/data/bases.xml");
+        CRUST_FILE_PATH = context.getRealPath("/data/crusts.xml");
+        INGREDIENT_FILE_PATH = context.getRealPath("/data/ingredients.xml");
+
+        System.out.println("ORDER_FILE_PATH: " + ORDER_FILE_PATH);
+        System.out.println("USER_FILE_PATH: " + USER_FILE_PATH);
+        System.out.println("SIZE_FILE_PATH: " + SIZE_FILE_PATH);
+        System.out.println("BASE_FILE_PATH: " + BASE_FILE_PATH);
+        System.out.println("CRUST_FILE_PATH: " + CRUST_FILE_PATH);
+        System.out.println("INGREDIENT_FILE_PATH: " + INGREDIENT_FILE_PATH);
+    }
+
+    private static String getRealPath(String relativePath) {
+        String fullPath = context.getRealPath(relativePath);
+        File file = new File(fullPath);
+        file.getParentFile().mkdirs(); // Crée les répertoires parents si nécessaire
+        return fullPath;
+    }
 
     // Save an order to the XML file
     public static void saveOrder(Order order) throws Exception {
@@ -48,6 +74,7 @@ public class Database {
         root.appendChild(orderElement);
         
         saveDocument(doc, ORDER_FILE_PATH);
+        System.out.println("Order saved to " + ORDER_FILE_PATH);
     }
 
     // Retrieve all orders from the XML file
@@ -87,15 +114,36 @@ public class Database {
         Document doc = getDocument(USER_FILE_PATH);
         Element root = doc.getDocumentElement();
 
-        Element userElement = doc.createElement("user");
-        userElement.setAttribute("id", String.valueOf(user.getId()));
-        userElement.setAttribute("name", user.getName());
-        userElement.setAttribute("address", user.getAddress());
-        userElement.setAttribute("phone", user.getPhone());
+        NodeList userNodes = doc.getElementsByTagName("user");
+        boolean userExists = false;
 
-        root.appendChild(userElement);
+        for (int i = 0; i < userNodes.getLength(); i++) {
+            Node userNode = userNodes.item(i);
+            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element userElement = (Element) userNode;
+                if (Integer.parseInt(userElement.getAttribute("id")) == user.getId()) {
+                    userElement.setAttribute("name", user.getName());
+                    userElement.setAttribute("address", user.getAddress());
+                    userElement.setAttribute("phone", user.getPhone());
+                    userElement.setAttribute("password", user.getPassword());
+                    userExists = true;
+                    break;
+                }
+            }
+        }
+
+        if (!userExists) {
+            Element userElement = doc.createElement("user");
+            userElement.setAttribute("id", String.valueOf(user.getId()));
+            userElement.setAttribute("name", user.getName());
+            userElement.setAttribute("address", user.getAddress());
+            userElement.setAttribute("phone", user.getPhone());
+            userElement.setAttribute("password", user.getPassword());
+            root.appendChild(userElement);
+        }
 
         saveDocument(doc, USER_FILE_PATH);
+        System.out.println("User saved to " + USER_FILE_PATH);
     }
 
     // Retrieve all users from the XML file
@@ -112,11 +160,23 @@ public class Database {
                 String name = userElement.getAttribute("name");
                 String address = userElement.getAttribute("address");
                 String phone = userElement.getAttribute("phone");
-
-                users.add(new User(id, name, address, phone));
+                String password = userElement.getAttribute("password");
+                users.add(new User(id, name, address, phone, password));
             }
         }
         return users;
+    }
+
+    // Get the next user ID
+    public static int getNextUserId() throws Exception {
+        List<User> users = getUsers();
+        int maxId = 0;
+        for (User user : users) {
+            if (user.getId() > maxId) {
+                maxId = user.getId();
+            }
+        }
+        return maxId + 1;
     }
 
     // Save an ingredient to the XML file
@@ -129,6 +189,7 @@ public class Database {
         root.appendChild(ingredientElement);
 
         saveDocument(doc, INGREDIENT_FILE_PATH);
+        System.out.println("Ingredient saved to " + INGREDIENT_FILE_PATH);
     }
 
     // Retrieve all ingredients from the XML file
@@ -156,6 +217,7 @@ public class Database {
         root.appendChild(sizeElement);
 
         saveDocument(doc, SIZE_FILE_PATH);
+        System.out.println("Size saved to " + SIZE_FILE_PATH);
     }
 
     public static List<String> getSizes() throws Exception {
@@ -172,7 +234,6 @@ public class Database {
         return sizes;
     }
 
-
     // Save a base to the XML file
     public static void saveBase(String base) throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
@@ -183,6 +244,7 @@ public class Database {
         root.appendChild(baseElement);
 
         saveDocument(doc, BASE_FILE_PATH);
+        System.out.println("Base saved to " + BASE_FILE_PATH);
     }
 
     // Retrieve all bases from the XML file
@@ -210,6 +272,7 @@ public class Database {
         root.appendChild(crustElement);
 
         saveDocument(doc, CRUST_FILE_PATH);
+        System.out.println("Crust saved to " + CRUST_FILE_PATH);
     }
 
     // Retrieve all crusts from the XML file
@@ -229,6 +292,9 @@ public class Database {
 
     // Get the document from the XML file, or create a new one if it doesn't exist
     private static Document getDocument(String filePath) throws Exception {
+        if (filePath == null) {
+            throw new IllegalArgumentException("File path is null. Make sure the file paths are correctly initialized.");
+        }
         File file = new File(filePath);
         if (!file.exists()) {
             createNewDocument(filePath);
@@ -243,11 +309,11 @@ public class Database {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.newDocument();
-        Element rootElement = doc.createElement(filePath.equals(ORDER_FILE_PATH) ? "orders" : 
-                                                filePath.equals(USER_FILE_PATH) ? "users" :
-                                                filePath.equals(SIZE_FILE_PATH) ? "sizes" :
-                                                filePath.equals(BASE_FILE_PATH) ? "bases" :
-                                                filePath.equals(CRUST_FILE_PATH) ? "crusts" : "ingredients");
+        Element rootElement = doc.createElement(filePath.endsWith("orders.xml") ? "orders" :
+                                                filePath.endsWith("users.xml") ? "users" :
+                                                filePath.endsWith("sizes.xml") ? "sizes" :
+                                                filePath.endsWith("bases.xml") ? "bases" :
+                                                filePath.endsWith("crusts.xml") ? "crusts" : "ingredients");
         doc.appendChild(rootElement);
         saveDocument(doc, filePath);
     }

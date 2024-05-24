@@ -7,9 +7,10 @@ body {
 .header {
     background: url('images/pizza-banner.webp') no-repeat center center;
     background-size: cover;
-    padding: 100px 0; /* Adjust padding to distance navbar from banner */
+    padding: 100px 0;
     text-align: center;
     color: white;
+    position: relative;
 }
 
 .header h1 {
@@ -17,9 +18,35 @@ body {
     font-size: 3em;
 }
 
+.user-greeting {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+}
+
+.greeting-text {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.auth-link {
+    font-size: 1.2em;
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
 .navbar {
     text-align: center;
-    margin: 20px 0; /* Adjust margin to reduce space between navbar and title */
+    margin: 20px 0;
 }
 
 .navbar a {
@@ -42,7 +69,7 @@ body {
 }
 
 .section {
-    margin: 50px 0; /* Adjust margin to distance section from navbar */
+    margin: 50px 0;
 }
 
 .features {

@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.pizzaapp.models.Ingredient" %>
+<%@ page import="com.pizzaapp.models.Pizza" %>
+<%@ page import="com.pizzaapp.models.Order" %>
+<%@ page import="com.pizzaapp.models.User" %>
+<%@ page import="com.pizzaapp.utils.Database" %>
 <!DOCTYPE html>
 <html>
 <head>

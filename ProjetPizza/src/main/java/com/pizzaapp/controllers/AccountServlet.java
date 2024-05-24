@@ -8,50 +8,42 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/account")
 public class AccountServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            response.sendRedirect("jsp/login.jsp");
-        } else {
-            request.getRequestDispatcher("jsp/account.jsp").forward(request, response);
-        }
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String phone = request.getParameter("phone");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            try {
-                List<User> users = Database.getUsers();
-                int newUserId = users.size() + 1;
-                user = new User(newUserId, name, address, phone);
-            } catch (Exception e) {
-                throw new ServletException("Error retrieving users", e);
-            }
-        } else {
+        if (user != null) {
+            String name = request.getParameter("name");
+            String address = request.getParameter("address");
+            String phone = request.getParameter("phone");
+            String password = request.getParameter("password");
+
+            // Utiliser les setters pour mettre à jour les informations de l'utilisateur
             user.setName(name);
             user.setAddress(address);
             user.setPhone(phone);
+            user.setPassword(password);
+
+            try {
+                Database.saveUser(user);
+                // Mettre à jour l'attribut de session
+                session.setAttribute("user", user);
+                session.setAttribute("successMessage", "Modification effectuée !");
+            } catch (Exception e) {
+                throw new ServletException("Erreur lors de l'enregistrement de l'utilisateur", e);
+            }
         }
 
-        request.getSession().setAttribute("user", user);
+        response.sendRedirect(request.getContextPath() + "/jsp/account.jsp");
+    }
 
-        try {
-            Database.saveUser(user);
-        } catch (Exception e) {
-            throw new ServletException("Error saving user", e);
-        }
-
-        request.getRequestDispatcher("jsp/account.jsp").forward(request, response);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);
     }
 }
