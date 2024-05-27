@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const totalPriceElement = document.getElementById("total-price");
 
     let pizzas = [];
+    let totalPrice = 0; // Initialize total price
 
     function clearForm() {
         sizeOptions.forEach(option => option.checked = false);
@@ -178,35 +179,39 @@ document.addEventListener("DOMContentLoaded", function() {
         addButton.disabled = true;
         pizzaImage.innerHTML = "";
         selectedIngredientsList.innerHTML = "";
-        updateTotalPrice();
     }
 
-    function updateTotalPrice() {
-        let totalPrice = 0;
+    function calculateCurrentPizzaPrice() {
+        let currentPizzaPrice = 0;
         const selectedCrust = crustSelect.options[crustSelect.selectedIndex];
         const selectedBase = baseSelect.options[baseSelect.selectedIndex];
 
         sizeOptions.forEach(option => {
             if (option.checked) {
-                totalPrice += parseFloat(option.getAttribute("data-price"));
+                currentPizzaPrice += parseFloat(option.getAttribute("data-price"));
             }
         });
 
         if (selectedCrust && selectedCrust.value) {
-            totalPrice += parseFloat(selectedCrust.getAttribute("data-price"));
+            currentPizzaPrice += parseFloat(selectedCrust.getAttribute("data-price"));
         }
 
         if (selectedBase && selectedBase.value) {
-            totalPrice += parseFloat(selectedBase.getAttribute("data-price"));
+            currentPizzaPrice += parseFloat(selectedBase.getAttribute("data-price"));
         }
 
         ingredientCheckboxes.forEach(checkbox => {
             if (checkbox.checked) {
-                totalPrice += parseFloat(checkbox.getAttribute("data-price"));
+                currentPizzaPrice += parseFloat(checkbox.getAttribute("data-price"));
             }
         });
 
-        totalPriceElement.textContent = totalPrice.toFixed(2) + " €";
+        return currentPizzaPrice;
+    }
+
+    function updateCurrentPizzaPrice() {
+        const currentPizzaPrice = calculateCurrentPizzaPrice();
+        totalPriceElement.textContent = (totalPrice + currentPizzaPrice).toFixed(2) + " €";
     }
 
     function updatePizzaList() {
@@ -314,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function() {
             selectedIngredientsList.appendChild(ingredientItem);
         });
 
-        updateTotalPrice();
+        updateCurrentPizzaPrice();
     });
 
     form.addEventListener("submit", function(event) {
@@ -336,7 +341,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
             pizzas.push(pizza);
 
+            // Add current pizza price to total price only once
+            const currentPizzaPrice = calculateCurrentPizzaPrice();
+            totalPrice += currentPizzaPrice;
+
             updatePizzaList();
+
+            // Reset only the display of the current pizza price
+            totalPriceElement.textContent = totalPrice.toFixed(2) + " €";
 
             clearForm();
         }
@@ -369,6 +381,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         xhr.send(formData.toString());
         pizzas = [];
+        totalPrice = 0; // Reset total price after order confirmation
+        updateCurrentPizzaPrice(); // Update displayed total price
         clearForm();
     });
 
@@ -381,26 +395,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
     ingredientCheckboxes.forEach(checkbox => {
         checkbox.addEventListener("change", function() {
-            updateTotalPrice();
+            updateCurrentPizzaPrice();
         });
     });
 
     crustSelect.addEventListener("change", function() {
-        updateTotalPrice();
+        updateCurrentPizzaPrice();
     });
 
     baseSelect.addEventListener("change", function() {
-        updateTotalPrice();
+        updateCurrentPizzaPrice();
     });
 
     sizeOptions.forEach(option => {
         option.addEventListener("change", function() {
-            updateTotalPrice();
+            updateCurrentPizzaPrice();
         });
     });
 });
-
-
 </script>
+
+
 </body>
 </html>
