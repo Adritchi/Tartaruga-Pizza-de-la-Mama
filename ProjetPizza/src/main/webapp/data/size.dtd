@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT sizes (size*)>
+<!ELEMENT size (#PCDATA)>
+<!ATTLIST size
+    name CDATA #REQUIRED
+    size CDATA #REQUIRED
+    price CDATA #REQUIRED>

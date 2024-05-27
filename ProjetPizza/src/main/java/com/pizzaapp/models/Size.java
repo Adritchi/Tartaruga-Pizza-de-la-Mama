@@ -1,11 +1,13 @@
 package com.pizzaapp.models;
 
-public class Ingredient {
+public class Size {
     private String name;
+    private String size;
     private String price;
 
-    public Ingredient(String name, String price) {
+    public Size(String name,String size,String price) {
         this.name = name;
+        this.size = size;
         this.price = price;
     }
 
@@ -24,4 +26,12 @@ public class Ingredient {
     public void setPrice(String price) {
         this.price = price;
     }
+    
+	public String getSize() {
+		return size;
+	}
+	
+	public void setSize(String size) {
+		this.size = size;
+	}
 }

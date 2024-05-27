@@ -1,6 +1,9 @@
 package com.pizzaapp.utils;
 
 import com.pizzaapp.models.Ingredient;
+import com.pizzaapp.models.Bases;
+import com.pizzaapp.models.Crust;
+import com.pizzaapp.models.Size;
 import com.pizzaapp.models.Order;
 import com.pizzaapp.models.Pizza;
 import com.pizzaapp.models.User;
@@ -99,7 +102,7 @@ public class Database {
                 for (int j = 0; j < ingredientNodes.getLength(); j++) {
                     Node ingredientNode = ingredientNodes.item(j);
                     if (ingredientNode.getNodeType() == Node.ELEMENT_NODE) {
-                        ingredients.add(new Ingredient(ingredientNode.getTextContent()));
+                        ingredients.add(new Ingredient(ingredientNode.getTextContent(), sauce));
                     }
                 }
                 Pizza pizza = new Pizza(size, crust, sauce, ingredients);
@@ -201,11 +204,17 @@ public class Database {
         for (int i = 0; i < ingredientNodes.getLength(); i++) {
             Node ingredientNode = ingredientNodes.item(i);
             if (ingredientNode.getNodeType() == Node.ELEMENT_NODE) {
-                ingredients.add(new Ingredient(ingredientNode.getTextContent()));
+                Element ingredientElement = (Element) ingredientNode;
+                String name = ingredientElement.getAttribute("name");
+                String price = ingredientElement.getAttribute("price");
+                ingredients.add(new Ingredient(name, price));
             }
         }
         return ingredients;
     }
+
+
+
 
     // Save a size to the XML file
     public static void saveSize(String size) throws Exception {
@@ -220,15 +229,19 @@ public class Database {
         System.out.println("Size saved to " + SIZE_FILE_PATH);
     }
 
-    public static List<String> getSizes() throws Exception {
+    public static List<Size> getSizes() throws Exception {
         Document doc = getDocument(SIZE_FILE_PATH);
         NodeList sizeNodes = doc.getElementsByTagName("size");
-        List<String> sizes = new ArrayList<>();
+        List<Size> sizes = new ArrayList<>();
 
         for (int i = 0; i < sizeNodes.getLength(); i++) {
-            Node sizeNode = sizeNodes.item(i);
-            if (sizeNode.getNodeType() == Node.ELEMENT_NODE) {
-                sizes.add(sizeNode.getTextContent());
+            Node sizetNode = sizeNodes.item(i);
+            if (sizetNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element sizeElement = (Element) sizetNode;
+                String name = sizeElement.getAttribute("name");
+                String size = sizeElement.getAttribute("size");
+                String price = sizeElement.getAttribute("price");
+                sizes.add(new Size(name, size, price));
             }
         }
         return sizes;
@@ -248,19 +261,23 @@ public class Database {
     }
 
     // Retrieve all bases from the XML file
-    public static List<String> getBases() throws Exception {
+    public static List<Bases> getBases() throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
-        NodeList baseNodes = doc.getElementsByTagName("base");
-        List<String> bases = new ArrayList<>();
+        NodeList ingredientNodes = doc.getElementsByTagName("base");
+        List<Bases> bases = new ArrayList<>();
 
-        for (int i = 0; i < baseNodes.getLength(); i++) {
-            Node baseNode = baseNodes.item(i);
-            if (baseNode.getNodeType() == Node.ELEMENT_NODE) {
-                bases.add(baseNode.getTextContent());
+        for (int i = 0; i < ingredientNodes.getLength(); i++) {
+            Node basesNode = ingredientNodes.item(i);
+            if (basesNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element ingredientElement = (Element) basesNode;
+                String name = ingredientElement.getAttribute("name");
+                String price = ingredientElement.getAttribute("price");
+                bases.add(new Bases(name, price));
             }
         }
         return bases;
     }
+
 
     // Save a crust to the XML file
     public static void saveCrust(String crust) throws Exception {
@@ -276,19 +293,23 @@ public class Database {
     }
 
     // Retrieve all crusts from the XML file
-    public static List<String> getCrusts() throws Exception {
+    public static List<Crust> getCrusts() throws Exception {
         Document doc = getDocument(CRUST_FILE_PATH);
         NodeList crustNodes = doc.getElementsByTagName("crust");
-        List<String> crusts = new ArrayList<>();
+        List<Crust> crusts = new ArrayList<>();
 
         for (int i = 0; i < crustNodes.getLength(); i++) {
-            Node crustNode = crustNodes.item(i);
-            if (crustNode.getNodeType() == Node.ELEMENT_NODE) {
-                crusts.add(crustNode.getTextContent());
+            Node basesNode = crustNodes.item(i);
+            if (basesNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element crustElement = (Element) basesNode;
+                String name = crustElement.getAttribute("name");
+                String price = crustElement.getAttribute("price");
+                crusts.add(new Crust(name, price));
             }
         }
         return crusts;
     }
+
 
     // Get the document from the XML file, or create a new one if it doesn't exist
     private static Document getDocument(String filePath) throws Exception {

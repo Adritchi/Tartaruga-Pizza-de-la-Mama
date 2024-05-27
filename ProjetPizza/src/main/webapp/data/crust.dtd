@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT crusts (crust*)>
+<!ELEMENT crust (#PCDATA)>
+<!ATTLIST crust
+    name CDATA #REQUIRED
+    price CDATA #REQUIRED>

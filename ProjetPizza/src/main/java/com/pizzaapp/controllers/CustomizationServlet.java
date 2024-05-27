@@ -1,6 +1,9 @@
 package com.pizzaapp.controllers;
 
 import com.pizzaapp.models.Ingredient;
+import com.pizzaapp.models.Crust;
+import com.pizzaapp.models.Bases;
+import com.pizzaapp.models.Size;
 import com.pizzaapp.models.Pizza;
 import com.pizzaapp.models.Order;
 import com.pizzaapp.utils.Database;
@@ -27,7 +30,10 @@ public class CustomizationServlet extends HttpServlet {
         List<Ingredient> ingredients = new ArrayList<>();
         if (selectedIngredients != null) {
             for (String ingredient : selectedIngredients) {
-                ingredients.add(new Ingredient(ingredient));
+                String[] parts = ingredient.split(":");
+                String name = parts[0];
+                String price = parts[1];
+                ingredients.add(new Ingredient(name, price));
             }
         }
 
@@ -47,9 +53,9 @@ public class CustomizationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<Ingredient> ingredients = Database.getIngredients();
-            List<String> sizes = Database.getSizes();
-            List<String> bases = Database.getBases();
-            List<String> crusts = Database.getCrusts();
+            List<Size> sizes = Database.getSizes();
+            List<Bases> bases = Database.getBases();
+            List<Crust> crusts = Database.getCrusts();
             request.setAttribute("ingredients", ingredients);
             request.setAttribute("sizes", sizes);
             request.setAttribute("bases", bases);
@@ -59,6 +65,5 @@ public class CustomizationServlet extends HttpServlet {
             throw new ServletException("Error loading data", e);
         }
     }
-    }
-    
 
+}

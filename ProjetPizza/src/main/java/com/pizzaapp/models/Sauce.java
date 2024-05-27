@@ -1,10 +1,10 @@
 package com.pizzaapp.models;
 
-public class Ingredient {
+public class Sauce {
     private String name;
     private String price;
 
-    public Ingredient(String name, String price) {
+    public Sauce(String name, String price) {
         this.name = name;
         this.price = price;
     }

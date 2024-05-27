@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ingredients>
-    <ingredient>Mozzarella</ingredient>
-    <ingredient>Tomates</ingredient>
-    <ingredient>Basilic</ingredient>
-    <ingredient>Bacon</ingredient>
-    <ingredient>Champignons</ingredient>
-    <ingredient>Oignons</ingredient>
+
+<ingredients xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingredients.xsd">
+	<ingredient name="Flour" price="1.00"/>
+	<ingredient name="Sugar" price="2.00"/>
+	<ingredient name="Eggs" price="3.00"/>
+	<ingredient name="Milk" price="4.00"/>
+	<ingredient name="Butter" price="5.00"/>
 </ingredients>

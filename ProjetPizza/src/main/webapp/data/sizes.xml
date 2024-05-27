@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sizes>
-    <size>Medium</size>
-    <size>Large</size>
-    <size>XL</size>
+<sizes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="size.xsd">
+<size name="XL" size="40 cm" price="10"/>
+<size name="L" size="30 cm" price="8"/>
+<size name="M" size="20 cm" price="6"/>
+
 </sizes>

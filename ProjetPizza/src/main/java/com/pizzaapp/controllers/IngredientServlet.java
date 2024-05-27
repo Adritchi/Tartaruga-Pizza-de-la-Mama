@@ -25,8 +25,9 @@ public class IngredientServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String ingredientName = request.getParameter("name");
-        if (ingredientName != null && !ingredientName.trim().isEmpty()) {
-            Ingredient ingredient = new Ingredient(ingredientName);
+        String ingredientPrice = request.getParameter("price");
+        if (ingredientName != null && !ingredientName.trim().isEmpty() && ingredientPrice != null && !ingredientPrice.trim().isEmpty()) {
+            Ingredient ingredient = new Ingredient(ingredientName, ingredientPrice);
             try {
                 Database.saveIngredient(ingredient);
             } catch (Exception e) {

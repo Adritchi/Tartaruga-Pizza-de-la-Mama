@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.pizzaapp.models.Ingredient" %>
 <%@ page import="com.pizzaapp.models.Pizza" %>
+<%@ page import="com.pizzaapp.models.Ingredient" %>
+<%@ page import="com.pizzaapp.models.Crust" %>
+<%@ page import="com.pizzaapp.models.Size" %>
+<%@ page import="com.pizzaapp.models.Bases" %>
 <%@ page import="com.pizzaapp.models.Order" %>
 <%@ page import="com.pizzaapp.models.User" %>
 <%@ page import="com.pizzaapp.utils.Database" %>
@@ -16,26 +19,26 @@
         <h1>Customize Your Pizza</h1>
     </div>
     <div class="user-greeting">
-            <%
-                User user = (User) session.getAttribute("user");
-                if (user != null) {
-            %>
-                <span class="greeting-text">Bonjour <%= user.getName() %>!</span>
-                <a class="auth-link" href="logout.jsp">Se déconnecter</a>
-            <%
-                } else {
-            %>
-                <a class="auth-link" href="login.jsp">Se connecter</a> |
-                <a class="auth-link" href="register.jsp">S'inscrire</a>
-            <%
-                }
-            %>
-        </div>
+        <%
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+        %>
+            <span class="greeting-text">Bonjour <%= user.getName() %>!</span>
+            <a class="auth-link" href="logout.jsp">Se déconnecter</a>
+        <%
+            } else {
+        %>
+            <a class="auth-link" href="login.jsp">Se connecter</a> |
+            <a class="auth-link" href="register.jsp">S'inscrire</a>
+        <%
+            }
+        %>
+    </div>
     <div class="navbar">
-    <a href="home.jsp">Accueil</a>
-    <a href="customize.jsp">Je personnalise ma pizza</a>
-    <a href="account.jsp">Mon Compte</a>
-</div>
+        <a href="home.jsp">Accueil</a>
+        <a href="customize.jsp">Je personnalise ma pizza</a>
+        <a href="account.jsp">Mon Compte</a>
+    </div>
     <div class="container">
         <div class="customization-container">
             <!-- Section 1: Liste des ingrédients -->
@@ -45,19 +48,23 @@
                     <form id="customize-form" action="customize" method="post">
                         <div>
                             <h2>Taille</h2>
-                            <%
-                                List<String> sizes = (List<String>) request.getAttribute("sizes");
+<%
+                                List<Size> sizes = Database.getSizes();
                                 if (sizes != null) {
-                                    for (String size : sizes) {
+                                    for (Size size : sizes) {
                             %>
-                                        <label>
-                                            <input type="radio" name="size" value="<%= size %>" <%= size.equals("Medium") ? "checked" : "" %>> <%= size %>
-                                        </label>
+                                        <div class="size-item">
+                                            <input type="checkbox" name="sizes" value="<%= size.getName() %>:<%= size.getPrice() %>" id="size-<%= size.getName() %>">
+                                            <label for="size-<%= size.getName() %>">
+                                                <img src="images/<%= size.getName().toLowerCase() %>.svg" alt="<%= size.getName() %>">
+                                                <span><%= size.getName() %> - <%= size.getSize() %> - <%= size.getPrice() %> € </span>
+                                            </label>
+                                        </div>
                             <%
                                     }
                                 } else {
                             %>
-                                    <p>No sizes available.</p>
+                                    <p>No size available.</p>
                             <%
                                 }
                             %>
@@ -65,13 +72,17 @@
                         <div>
                             <h2>Pâte</h2>
                             <%
-                                List<String> crusts = (List<String>) request.getAttribute("crusts");
+                                List<Crust> crusts = Database.getCrusts();
                                 if (crusts != null) {
-                                    for (String crust : crusts) {
+                                    for (Crust crust : crusts) {
                             %>
-                                        <label>
-                                            <input type="radio" name="crust" value="<%= crust %>" <%= crust.equals("Classique") ? "checked" : "" %>> <%= crust %>
-                                        </label>
+                                        <div class="crust-item">
+                                            <input type="checkbox" name="ingredients" value="<%= crust.getName() %>:<%= crust.getPrice() %>" id="crust-<%= crust.getName() %>">
+                                            <label for="crust-<%= crust.getName() %>">
+                                                <img src="images/<%= crust.getName().toLowerCase() %>.svg" alt="<%= crust.getName() %>">
+                                                <span><%= crust.getName() %> - $<%= crust.getPrice() %></span>
+                                            </label>
+                                        </div>
                             <%
                                     }
                                 } else {
@@ -84,13 +95,17 @@
                         <div>
                             <h2>Sauce</h2>
                             <%
-                                List<String> bases = (List<String>) request.getAttribute("bases");
+                                List<Bases> bases = Database.getBases();
                                 if (bases != null) {
-                                    for (String base : bases) {
+                                    for (Bases base : bases) {
                             %>
-                                        <label>
-                                            <input type="radio" name="sauce" value="<%= base %>" <%= base.equals("Base Sauce Tomate") ? "checked" : "" %>> <%= base %>
-                                        </label>
+                                        <div class="base-item">
+                                            <input type="checkbox" name="ingredients" value="<%= base.getName() %>:<%= base.getPrice() %>" id="base-<%= base.getName() %>">
+                                            <label for="base-<%= base.getName() %>">
+                                                <img src="images/<%= base.getName().toLowerCase() %>.svg" alt="<%= base.getName() %>">
+                                                <span><%= base.getName() %> - $<%= base.getPrice() %></span>
+                                            </label>
+                                        </div>
                             <%
                                     }
                                 } else {
@@ -104,15 +119,15 @@
                             <h2>Ingrédients</h2>
                             <div class="customization-ingredients">
                                 <%
-                                    List<Ingredient> ingredients = (List<Ingredient>) request.getAttribute("ingredients");
+                                    List<Ingredient> ingredients = Database.getIngredients();
                                     if (ingredients != null) {
                                         for (Ingredient ingredient : ingredients) {
                                 %>
                                             <div class="ingredient-item">
-                                                <input type="checkbox" name="ingredients" value="<%= ingredient.getName() %>" id="ingredient-<%= ingredient.getName() %>">
+                                                <input type="checkbox" name="ingredients" value="<%= ingredient.getName() %>:<%= ingredient.getPrice() %>" id="ingredient-<%= ingredient.getName() %>">
                                                 <label for="ingredient-<%= ingredient.getName() %>">
-                                                    <img src="images/<%= ingredient.getName().toLowerCase() %>.png" alt="<%= ingredient.getName() %>">
-                                                    <span><%= ingredient.getName() %></span>
+                                                    <img src="images/<%= ingredient.getName().toLowerCase() %>.svg" alt="<%= ingredient.getName() %>">
+                                                    <span><%= ingredient.getName() %> - <%= ingredient.getPrice() %> €</span>
                                                 </label>
                                             </div>
                                 <%

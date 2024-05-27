@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT bases (base*)>
+<!ELEMENT base (#PCDATA)>
+<!ATTLIST base
+    name CDATA #REQUIRED
+    price CDATA #REQUIRED>

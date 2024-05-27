@@ -25,7 +25,7 @@
         <h2>Current Ingredients</h2>
         <ul>
             <%
-                List<Ingredient> ingredients = (List<Ingredient>) request.getAttribute("ingredients");
+                List<Ingredient> ingredients = Database.getIngredients();
                 if (ingredients != null) {
                     for (Ingredient ingredient : ingredients) {
             %>
