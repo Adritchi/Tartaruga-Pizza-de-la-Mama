@@ -1,11 +1,6 @@
 package com.pizzaapp.controllers;
 
-import com.pizzaapp.models.Ingredient;
-import com.pizzaapp.models.Crust;
-import com.pizzaapp.models.Bases;
-import com.pizzaapp.models.Size;
-import com.pizzaapp.models.Pizza;
-import com.pizzaapp.models.Order;
+import com.pizzaapp.models.*;
 import com.pizzaapp.utils.Database;
 
 import javax.servlet.ServletException;
@@ -17,11 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/customize")
 public class CustomizationServlet extends HttpServlet {
     private static int orderIdCounter = 1;
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+            return;
+        }
+
         String size = request.getParameter("size");
         String crust = request.getParameter("crust");
         String sauce = request.getParameter("sauce");
@@ -63,7 +64,14 @@ public class CustomizationServlet extends HttpServlet {
         request.getRequestDispatcher("jsp/customize.jsp").forward(request, response);
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+            return;
+        }
+
         try {
             List<Ingredient> ingredients = Database.getIngredients();
             List<Size> sizes = Database.getSizes();

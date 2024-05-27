@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter({"/jsp/account.jsp", "/account"})
+@WebFilter({"/jsp/account.jsp", "/account", "/jsp/customize.jsp", "/customize"})
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}

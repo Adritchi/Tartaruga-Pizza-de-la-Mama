@@ -52,7 +52,7 @@
                     <p>Ne vous fiez pas à son allure de tortue...</p>
                 </div>
                 <div class="feature">
-                    <img src="images/account-icon.png" alt="Easy Account Management">
+                    <img src="images/account-icon.webp" alt="Easy Account Management">
                     <h3>Gestion de votre compte</h3>
                     <p>Gérer votre compte facilement.</p>
                 </div>
