@@ -5,12 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customize Your Pizza - PizzaApp</title>
+    <title>Personnalise ta Pizza - PizzaApp</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <div class="header">
-        <h1>Customize Your Pizza</h1>
+        <h1>Customize ta propre Pizza</h1>
     </div>
     <div class="user-greeting">
         <%
@@ -36,104 +36,86 @@
     <div class="container">
         <div class="customization-container">
             <div class="customization-left">
-                <h2>Crée Ta Pizza - Plus d'un Million de Possibilités</h2>
+                <h2>Plus d'un Million de Possibilités</h2>
                 <div class="customization-details">
                     <form id="customize-form" action="customize" method="post">
-                        <div>
+                        <div class="customization-group">
                             <h2>Taille</h2>
-                            <%
-                                List<Size> sizes = Database.getSizes();
-                                if (sizes != null && !sizes.isEmpty()) {
-                                    for (Size size : sizes) {
-                            %>
-                                        <div class="size-item">
+                            <div class="options">
+                                <% List<Size> sizes = Database.getSizes(); %>
+                                <% if (sizes != null && !sizes.isEmpty()) { %>
+                                    <% for (Size size : sizes) { %>
+                                        <div class="option-item">
                                             <input type="radio" name="size" value="<%= size.getName() %>" id="size-<%= size.getName() %>">
                                             <label for="size-<%= size.getName() %>">
-                                                <img src="images/<%= size.getName().toLowerCase() %>.png" alt="<%= size.getName() %>">
-                                                <span><%= size.getName() %> - <%= size.getSize() %> - <%= size.getPrice() %> € </span>
+                                                <span><%= size.getName() %> - <%= size.getSize() %> - <%= size.getPrice() %> €</span>
                                             </label>
                                         </div>
-                            <%
-                                    }
-                                } else {
-                            %>
+                                    <% } %>
+                                <% } else { %>
                                     <p>Aucune taille disponible.</p>
-                            <%
-                                }
-                            %>
+                                <% } %>
+                            </div>
                         </div>
-                        <div>
+                        
+                        <div class="customization-group">
                             <h2>Pâte</h2>
-                            <%
-                                List<Crust> crusts = Database.getCrusts();
-                                if (crusts != null && !crusts.isEmpty()) {
-                                    for (Crust crust : crusts) {
-                            %>
-                                        <div class="crust-item">
-                                            <input type="radio" name="crust" value="<%= crust.getName() %>" id="crust-<%= crust.getName() %>">
-                                            <label for="crust-<%= crust.getName() %>">
-                                                <img src="images/<%= crust.getName().toLowerCase() %>.png" alt="<%= crust.getName() %>">
-                                                <span><%= crust.getName() %> - <%= crust.getPrice() %> €</span>
-                                            </label>
-                                        </div>
-                            <%
-                                    }
-                                } else {
-                            %>
-                                    <p>Aucune pâte disponible.</p>
-                            <%
-                                }
-                            %>
+                            <div class="dropdown">
+                                <select id="crust-select" name="crust" disabled>
+                                    <option value="">Sélectionner une pâte</option>
+                                    <% List<Crust> crusts = Database.getCrusts(); %>
+                                    <% if (crusts != null && !crusts.isEmpty()) { %>
+                                        <% for (Crust crust : crusts) { %>
+                                            <option value="<%= crust.getName() %>">
+                                                <%= crust.getName() %> - <%= crust.getPrice() %> €
+                                            </option>
+                                        <% } %>
+                                    <% } else { %>
+                                        <option value="">Aucune pâte disponible.</option>
+                                    <% } %>
+                                </select>
+                            </div>
                         </div>
-                        <div>
+                        
+                        <div class="customization-group">
                             <h2>Sauce</h2>
-                            <%
-                                List<Bases> bases = Database.getBases();
-                                if (bases != null && !bases.isEmpty()) {
-                                    for (Bases base : bases) {
-                            %>
-                                        <div class="base-item">
-                                            <input type="radio" name="base" value="<%= base.getName() %>" id="base-<%= base.getName() %>">
-                                            <label for="base-<%= base.getName() %>">
-                                                <img src="images/<%= base.getName().toLowerCase() %>.png" alt="<%= base.getName() %>">
-                                                <span><%= base.getName() %> - <%= base.getPrice() %> €</span>
+                            <div class="dropdown">
+                                <select id="base-select" name="base" disabled>
+                                    <option value="">Sélectionner une sauce</option>
+                                    <% List<Bases> bases = Database.getBases(); %>
+                                    <% if (bases != null && !bases.isEmpty()) { %>
+                                        <% for (Bases base : bases) { %>
+                                            <option value="<%= base.getName() %>">
+                                                <%= base.getName() %> - <%= base.getPrice() %> €
+                                            </option>
+                                        <% } %>
+                                    <% } else { %>
+                                        <option value="">Aucune sauce disponible.</option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="customization-group">
+                            <h2>Ingrédients</h2>
+                            <div class="customization-ingredients" id="ingredients-container">
+                                <% List<Ingredient> ingredients = Database.getIngredients(); %>
+                                <% if (ingredients != null && !ingredients.isEmpty()) { %>
+                                    <% for (Ingredient ingredient : ingredients) { %>
+                                        <div class="ingredient-item">
+                                            <input type="checkbox" name="ingredients" value="<%= ingredient.getName().toLowerCase() %>" id="ingredient-<%= ingredient.getName().toLowerCase() %>" disabled>
+                                            <label for="ingredient-<%= ingredient.getName().toLowerCase() %>">
+                                                <img src="images/<%= ingredient.getName().toLowerCase() %>.png" alt="<%= ingredient.getName() %>">
+                                                <span><%= ingredient.getName() %> - <%= ingredient.getPrice() %> €</span>
                                             </label>
                                         </div>
-                            <%
-                                    }
-                                } else {
-                            %>
-                                    <p>Aucune sauce disponible.</p>
-                            <%
-                                }
-                            %>
+                                    <% } %>
+                                <% } else { %>
+                                    <p>Aucun ingrédient disponible.</p>
+                                <% } %>
+                            </div>
                         </div>
-                        <div>
-<h2>Ingrédients</h2>
-<div class="customization-ingredients">
-    <%
-        List<Ingredient> ingredients = Database.getIngredients();
-        if (ingredients != null && !ingredients.isEmpty()) {
-            for (Ingredient ingredient : ingredients) {
-    %>
-                <div class="ingredient-item">
-                    <input type="checkbox" name="ingredients" value="<%= ingredient.getName().toLowerCase() %>" id="ingredient-<%= ingredient.getName().toLowerCase() %>">
-                    <label for="ingredient-<%= ingredient.getName().toLowerCase() %>">
-                        <img src="images/<%= ingredient.getName().toLowerCase() %>.png" alt="<%= ingredient.getName() %>">
-                        <span><%= ingredient.getName() %> - <%= ingredient.getPrice() %> €</span>
-                    </label>
-                </div>
-    <%
-            }
-        } else {
-    %>
-            <p>Aucun ingrédient disponible.</p>
-    <%
-        }
-    %>
-</div>
-                        </div>
-                        <button type="submit" class="add-button">Ajouter</button>
+                        <button type="submit" class="add-button" id="add-button" disabled>Ajouter</button>
                     </form>
                 </div>
             </div>
@@ -145,92 +127,185 @@
                 </div>
             </div>
             <!-- Section 3: Détail de la commande -->
-            <div class="customization-right">
-                <h2>Détail de la commande</h2>
-                <div class="customization-details">
-                    <h3>Ingrédients Sélectionnés :</h3>
-                    <ul id="selected-ingredients">
-                        <%
-                            Pizza pizza = (Pizza) request.getAttribute("pizza");
-                            if (pizza != null) {
-                                for (Ingredient ingredient : pizza.getIngredients()) {
-                        %>
-                                    <li><%= ingredient.getName() %></li>
-                        <%
-                                }
-                            }
-                        %>
-                    </ul>
-                </div>
-                <button id="confirm-order" class="add-button">Confirmer la commande</button>
-            </div>
+<div class="customization-right">
+    <h2>Détail de la commande</h2>
+    <div class="customization-details">
+        <h3>Ingrédients Sélectionnés :</h3>
+        <ul id="selected-ingredients" class="ingredient-list">
+            <!-- Les ingrédients sélectionnés pour la pizza actuelle -->
+        </ul>
+        <h3>Pizzas Commandées :</h3>
+        <div id="ordered-pizzas" class="pizza-list">
+            <!-- Liste des pizzas commandées -->
+        </div>
+        <button id="new-pizza-button" class="add-button new-pizza-button">Nouvelle Pizza</button>
+    </div>
+    <button id="confirm-order" class="add-button confirm-button">Confirmer la commande</button>
+</div>
+
         </div>
     </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("customize-form");
     const pizzaImage = document.getElementById("pizza-image");
+    const crustSelect = document.getElementById("crust-select");
+    const baseSelect = document.getElementById("base-select");
+    const ingredientCheckboxes = document.querySelectorAll(".ingredient-item input[type='checkbox']");
+    const addButton = document.getElementById("add-button");
+    const orderedPizzasList = document.getElementById("ordered-pizzas");
+    const selectedIngredientsList = document.getElementById("selected-ingredients");
+    const newPizzaButton = document.getElementById("new-pizza-button");
+
+    function clearForm() {
+        const sizeOptions = document.querySelectorAll("input[name='size']");
+        sizeOptions.forEach(option => option.checked = false);
+        crustSelect.disabled = true;
+        crustSelect.value = "";
+        baseSelect.disabled = true;
+        baseSelect.value = "";
+        ingredientCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+            checkbox.disabled = true;
+        });
+        addButton.disabled = true;
+        pizzaImage.innerHTML = "";
+        selectedIngredientsList.innerHTML = "";
+    }
 
     form.addEventListener("change", function() {
         const formData = new FormData(form);
+        const size = formData.get("size");
         const crust = formData.get("crust");
         const base = formData.get("base");
         const ingredients = formData.getAll("ingredients");
 
-        console.log("Selected crust:", crust); // Log selected crust
-        console.log("Selected base:", base); // Log selected base
-        console.log("Selected ingredients:", ingredients); // Log selected ingredients
+        if (size) {
+            crustSelect.disabled = false;
+        } else {
+            crustSelect.disabled = true;
+            crustSelect.value = "";
+            baseSelect.disabled = true;
+            baseSelect.value = "";
+            ingredientCheckboxes.forEach(checkbox => checkbox.disabled = true);
+            addButton.disabled = true;
+        }
 
-        // Clear the current pizza image
+        if (crust) {
+            baseSelect.disabled = false;
+        } else {
+            baseSelect.disabled = true;
+            baseSelect.value = "";
+            ingredientCheckboxes.forEach(checkbox => checkbox.disabled = true);
+            addButton.disabled = true;
+        }
+
+        if (base) {
+            ingredientCheckboxes.forEach(checkbox => checkbox.disabled = false);
+            addButton.disabled = false;
+        } else {
+            ingredientCheckboxes.forEach(checkbox => checkbox.disabled = true);
+            addButton.disabled = true;
+        }
+
         pizzaImage.innerHTML = "";
 
-        // Add crust image if selected
+        function appendImage(src, alt, zIndex) {
+            const img = document.createElement("img");
+            img.src = src;
+            img.alt = alt;
+            img.style.zIndex = zIndex;
+            img.style.position = 'absolute';
+            img.className = "ingredient-preview";
+            img.onerror = function() {
+                console.error(`Image not found at ${src}`);
+            };
+            pizzaImage.appendChild(img);
+        }
+
         if (crust) {
-            const crustImagePath = ("images/" + ${crust} + ".png");
-            console.log("Crust image path:", crustImagePath); // Log the crust image path
-            const crustImg = document.createElement("img");
-            crustImg.src = crustImagePath;
-            crustImg.alt = crust;
-            crustImg.className = "ingredient-preview";
-            crustImg.onerror = function() {
-                console.error(`Crust image not found at ${crustImagePath}`);
-            };
-            pizzaImage.appendChild(crustImg);
+            const crustImagePath = "images/" + crust.toLowerCase() + ".png";
+            console.log("Crust image path:", crustImagePath);
+            appendImage(crustImagePath, crust, 1);
         }
 
-        // Add base image if selected
         if (base) {
-            const baseImagePath = `images/${base.toLowerCase()}.png`;
-            console.log("Base image path:", baseImagePath); // Log the base image path
-            const baseImg = document.createElement("img");
-            baseImg.src = baseImagePath;
-            baseImg.alt = base;
-            baseImg.className = "ingredient-preview";
-            baseImg.onerror = function() {
-                console.error(`Base image not found at ${baseImagePath}`);
-            };
-            pizzaImage.appendChild(baseImg);
+            const baseImagePath = "images/" + base.toLowerCase() + ".png";
+            console.log("Base image path:", baseImagePath);
+            appendImage(baseImagePath, base, 2);
         }
 
-        // Add ingredient images
-        ingredients.forEach(ingredientName => {
+        ingredients.forEach((ingredientName, index) => {
             if (ingredientName) {
-                const ingredientImagePath = ("images/" + ${ingredientName} + ".png");
-                console.log("Ingredient image path:", ingredientImagePath); // Log the ingredient image path
-                const img = document.createElement("img");
-                img.src = ingredientImagePath;
-                img.alt = ingredientName;
-                img.className = "ingredient-preview";
-                img.onerror = function() {
-                    console.error(`Ingredient image not found at ${ingredientImagePath}`);
-                };
-                pizzaImage.appendChild(img);
+                const ingredientImagePath = "images/" + ingredientName.toLowerCase() + ".png";
+                console.log("Ingredient image path:", ingredientImagePath);
+                appendImage(ingredientImagePath, ingredientName, index + 3);
             } else {
                 console.error("Ingredient name is empty");
             }
         });
+
+        selectedIngredientsList.innerHTML = "";
+        if (size) {
+            const sizeItem = document.createElement("li");
+            sizeItem.textContent = "Taille : " + size;
+            selectedIngredientsList.appendChild(sizeItem);
+        }
+        if (crust) {
+            const crustItem = document.createElement("li");
+            crustItem.textContent = "Pâte : " + crust;
+            selectedIngredientsList.appendChild(crustItem);
+        }
+        if (base) {
+            const baseItem = document.createElement("li");
+            baseItem.textContent = "Sauce : " + base;
+            selectedIngredientsList.appendChild(baseItem);
+        }
+        ingredients.forEach(ingredient => {
+            const ingredientItem = document.createElement("li");
+            ingredientItem.textContent = ingredient;
+            selectedIngredientsList.appendChild(ingredientItem);
+        });
+    });
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const size = formData.get("size");
+        const crust = formData.get("crust");
+        const base = formData.get("base");
+        const ingredients = formData.getAll("ingredients");
+
+        if (size && crust && base) {
+            const pizzaSummary = document.createElement("div");
+            pizzaSummary.className = "pizza-item";
+            pizzaSummary.innerHTML = `
+                <p><strong>Taille :</strong> ${size}</p>
+                <p><strong>Pâte :</strong> ${crust}</p>
+                <p><strong>Sauce :</strong> ${base}</p>
+                <p><strong>Ingrédients :</strong> ${ingredients.join(", ")}</p>
+            `;
+
+            orderedPizzasList.appendChild(pizzaSummary);
+
+            clearForm();
+        }
+    });
+
+    newPizzaButton.addEventListener("click", function() {
+        clearForm();
+    });
+
+    const selects = document.querySelectorAll("select");
+    selects.forEach(select => {
+        select.addEventListener("change", function() {
+            this.blur();
+        });
     });
 });
+
+
 
 
 </script>

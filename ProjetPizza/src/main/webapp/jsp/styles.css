@@ -119,29 +119,29 @@ body {
 }
 
 .customization-center {
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative; /* Ensure the container is relative for absolute positioning of child elements */
+    width: 100%;
 }
 
 .pizza-preview {
     width: 100%;
-    height: 400px; /* Adjust as needed */
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    max-width: 300px;
+    height: 300px;
     position: relative;
-    overflow: hidden; /* Ensure images do not overflow the container */
+    overflow: hidden;
+    margin: 0 auto;
 }
 
 .pizza-preview img {
-    max-width: 100px; /* Adjust size as needed */
-    margin: 5px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center images */
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .customization-details {
@@ -150,39 +150,70 @@ body {
 
 .customization-details h2 {
     margin-bottom: 10px;
+    font-size: 1.8em;
+    color: #333;
 }
 
 .customization-details p {
     margin: 5px 0;
+    color: #777;
+}
+
+.customization-group {
+    margin-bottom: 20px;
+}
+
+.dropdown select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    font-size: 1em;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    appearance: none; /* Remove default arrow */
+    background-image: url('images/dropdown-arrow.png'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.dropdown select:focus {
+    background-color: #e2e6ea;
 }
 
 .customization-ingredients {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    gap: 10px;
 }
 
 .ingredient-item {
+    flex: 0 1 calc(50% - 10px);
     display: flex;
     align-items: center;
-    width: 48%;
-    margin: 10px 0;
 }
 
-.ingredient-item img {
-    width: 50px;
-    height: 50px;
+.ingredient-item input[type="checkbox"] {
     margin-right: 10px;
 }
 
 .ingredient-item label {
-    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.ingredient-item img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
 
 .add-button {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     background-color: #007BFF;
     color: white;
     padding: 10px;
@@ -197,24 +228,71 @@ body {
     background-color: #0056b3;
 }
 
+#ordered-pizzas {
+    list-style-type: none;
+    padding: 0;
+}
 
-.pizza-preview {
+.pizza-list .pizza-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     position: relative;
-    width: 300px;
-    height: 300px;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
 }
 
-.pizza-preview img {
+.pizza-list .pizza-item::before {
+    content: '🍕';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5em;
 }
 
+.new-pizza-button {
+    background-color: #28a745;
+}
+
+.new-pizza-button:hover {
+    background-color: #218838;
+}
+
+.confirm-button {
+    background-color: #007bff;
+}
+
+.confirm-button:hover {
+    background-color: #0056b3;
+}
+
+.ingredient-list {
+    list-style: none;
+    padding: 0;
+}
+
+.ingredient-list li::before {
+    content: '•';
+    color: #007BFF;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.pizza-item p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.pizza-item strong {
+    color: #333;
+}
+
+.total-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
 
