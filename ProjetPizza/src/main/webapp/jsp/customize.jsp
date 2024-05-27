@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             updatePizzaList();
 
-            clearForm();			
+            clearForm();
         }
     });
 
@@ -348,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("confirm-order").addEventListener("click", function() {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/ProjetPizza/order", true);
+        xhr.open("POST", "/ProjetPizza/order", true);  // Corrigez l'URL ici
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function() {
@@ -367,14 +367,10 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
 
-        formData.append("orderId", 1); // This should be dynamically generated or managed
-
         xhr.send(formData.toString());
+        pizzas = [];
         clearForm();
     });
-
-
-
 
     const selects = document.querySelectorAll("select");
     selects.forEach(select => {
@@ -403,6 +399,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
 
 </script>
 </body>
