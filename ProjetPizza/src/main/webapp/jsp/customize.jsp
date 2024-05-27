@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Customize ta propre Pizza</h1>
+        <h1>Customise ta propre Pizza</h1>
     </div>
     <div class="user-greeting">
         <%
@@ -39,7 +39,7 @@
                 <h2>Plus d'un Million de Possibilités</h2>
                 <div class="customization-details">
                     <form id="customize-form" action="customize" method="post">
-                        <input type="hidden" name="pizza-index" id="pizza-index" value="1">
+                         <input type="hidden" name="orderId" value="1">
                         <div class="customization-group">
                             <h2>Taille</h2>
                             <div class="options">
@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             updatePizzaList();
 
-            clearForm();
+            clearForm();			
         }
     });
 
@@ -347,8 +347,34 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirm-order").addEventListener("click", function() {
-        console.log("Commande confirmée:", pizzas);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/ProjetPizza/order", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert("Commande confirmée et enregistrée avec succès.");
+            }
+        };
+
+        const formData = new URLSearchParams();
+        pizzas.forEach((pizza, index) => {
+            formData.append(`pizza${index}Size`, pizza.size);
+            formData.append(`pizza${index}Crust`, pizza.crust);
+            formData.append(`pizza${index}Base`, pizza.base);
+            pizza.ingredients.forEach((ingredient, i) => {
+                formData.append(`pizza${index}Ingredient${i}`, ingredient);
+            });
+        });
+
+        formData.append("orderId", 1); // This should be dynamically generated or managed
+
+        xhr.send(formData.toString());
+        clearForm();
     });
+
+
+
 
     const selects = document.querySelectorAll("select");
     selects.forEach(select => {

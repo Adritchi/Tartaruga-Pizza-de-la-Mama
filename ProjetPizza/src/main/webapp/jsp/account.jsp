@@ -35,19 +35,19 @@
         <div class="account-form">
             <form action="<%=request.getContextPath()%>/account" method="post">
                 <div class="form-group">
-                    <label for="name">Nom:</label>
+                    <label for="name">Nom :</label>
                     <input type="text" id="name" name="name" class="form-control" value="<%= user.getName() %>">
                 </div>
                 <div class="form-group">
-                    <label for="address">Adresse:</label>
+                    <label for="address">Adresse :</label>
                     <input type="text" id="address" name="address" class="form-control" value="<%= user.getAddress() %>">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Téléphone:</label>
+                    <label for="phone">Téléphone :</label>
                     <input type="text" id="phone" name="phone" class="form-control" value="<%= user.getPhone() %>">
                 </div>
                 <div class="form-group">
-                    <label for="password">Mot de passe:</label>
+                    <label for="password">Mot de passe :</label>
                     <input type="password" id="password" name="password" class="form-control" value="<%= user.getPassword() %>">
                 </div>
                 <div class="form-group">

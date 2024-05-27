@@ -1,19 +1,21 @@
 package com.pizzaapp.models;
 
+import java.util.List;
+
 public class Order {
     private int id;
-    private Pizza pizza;
+    private List<Pizza> pizzas;
 
-    public Order(int id, Pizza pizza) {
+    public Order(int id, List<Pizza> pizzas) {
         this.id = id;
-        this.pizza = pizza;
+        this.pizzas = pizzas;
     }
 
     public int getId() {
         return id;
     }
 
-    public Pizza getPizza() {
-        return pizza;
+    public List<Pizza> getPizzas() {
+        return pizzas;
     }
 }

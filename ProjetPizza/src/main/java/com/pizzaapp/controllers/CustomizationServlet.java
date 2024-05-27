@@ -38,7 +38,20 @@ public class CustomizationServlet extends HttpServlet {
         }
 
         Pizza pizza = new Pizza(size, crust, sauce, ingredients);
-        Order order = new Order(orderIdCounter++, pizza);
+
+        // Récupérer les commandes existantes pour générer un nouvel ID
+        List<Order> orders;
+        try {
+            orders = Database.getOrders();
+        } catch (Exception e) {
+            throw new ServletException("Error retrieving orders", e);
+        }
+        int newOrderId = orders.size() + 1;
+
+        List<Pizza> pizzas = new ArrayList<>();
+        pizzas.add(pizza);
+
+        Order order = new Order(newOrderId, pizzas);
 
         try {
             Database.saveOrder(order);
@@ -65,5 +78,4 @@ public class CustomizationServlet extends HttpServlet {
             throw new ServletException("Error loading data", e);
         }
     }
-
 }
