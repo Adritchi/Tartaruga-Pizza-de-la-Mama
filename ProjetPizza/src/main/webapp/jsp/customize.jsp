@@ -39,6 +39,7 @@
                 <h2>Plus d'un Million de Possibilités</h2>
                 <div class="customization-details">
                     <form id="customize-form" action="customize" method="post">
+                        <input type="hidden" name="pizza-index" id="pizza-index" value="1">
                         <div class="customization-group">
                             <h2>Taille</h2>
                             <div class="options">
@@ -46,7 +47,7 @@
                                 <% if (sizes != null && !sizes.isEmpty()) { %>
                                     <% for (Size size : sizes) { %>
                                         <div class="option-item">
-                                            <input type="radio" name="size" value="<%= size.getName() %>" id="size-<%= size.getName() %>">
+                                            <input type="radio" name="size" value="<%= size.getName() %>" id="size-<%= size.getName() %>" data-price="<%= size.getPrice() %>">
                                             <label for="size-<%= size.getName() %>">
                                                 <span><%= size.getName() %> - <%= size.getSize() %> - <%= size.getPrice() %> €</span>
                                             </label>
@@ -66,7 +67,7 @@
                                     <% List<Crust> crusts = Database.getCrusts(); %>
                                     <% if (crusts != null && !crusts.isEmpty()) { %>
                                         <% for (Crust crust : crusts) { %>
-                                            <option value="<%= crust.getName() %>">
+                                            <option value="<%= crust.getName() %>" data-price="<%= crust.getPrice() %>">
                                                 <%= crust.getName() %> - <%= crust.getPrice() %> €
                                             </option>
                                         <% } %>
@@ -85,7 +86,7 @@
                                     <% List<Bases> bases = Database.getBases(); %>
                                     <% if (bases != null && !bases.isEmpty()) { %>
                                         <% for (Bases base : bases) { %>
-                                            <option value="<%= base.getName() %>">
+                                            <option value="<%= base.getName() %>" data-price="<%= base.getPrice() %>">
                                                 <%= base.getName() %> - <%= base.getPrice() %> €
                                             </option>
                                         <% } %>
@@ -103,7 +104,7 @@
                                 <% if (ingredients != null && !ingredients.isEmpty()) { %>
                                     <% for (Ingredient ingredient : ingredients) { %>
                                         <div class="ingredient-item">
-                                            <input type="checkbox" name="ingredients" value="<%= ingredient.getName().toLowerCase() %>" id="ingredient-<%= ingredient.getName().toLowerCase() %>" disabled>
+                                            <input type="checkbox" name="ingredient" value="<%= ingredient.getName().toLowerCase() %>" id="ingredient-<%= ingredient.getName().toLowerCase() %>" data-price="<%= ingredient.getPrice() %>" disabled>
                                             <label for="ingredient-<%= ingredient.getName().toLowerCase() %>">
                                                 <img src="images/<%= ingredient.getName().toLowerCase() %>.png" alt="<%= ingredient.getName() %>">
                                                 <span><%= ingredient.getName() %> - <%= ingredient.getPrice() %> €</span>
@@ -127,22 +128,25 @@
                 </div>
             </div>
             <!-- Section 3: Détail de la commande -->
-<div class="customization-right">
-    <h2>Détail de la commande</h2>
-    <div class="customization-details">
-        <h3>Ingrédients Sélectionnés :</h3>
-        <ul id="selected-ingredients" class="ingredient-list">
-            <!-- Les ingrédients sélectionnés pour la pizza actuelle -->
-        </ul>
-        <h3>Pizzas Commandées :</h3>
-        <div id="ordered-pizzas" class="pizza-list">
-            <!-- Liste des pizzas commandées -->
-        </div>
-        <button id="new-pizza-button" class="add-button new-pizza-button">Nouvelle Pizza</button>
-    </div>
-    <button id="confirm-order" class="add-button confirm-button">Confirmer la commande</button>
-</div>
-
+            <div class="customization-right">
+                <h2>Détail de la commande</h2>
+                <div class="customization-details">
+                    <h3>Ingrédients Sélectionnés :</h3>
+                    <ul id="selected-ingredients" class="ingredient-list">
+                        <!-- Les ingrédients sélectionnés pour la pizza actuelle -->
+                    </ul>
+                    <h3>Pizzas Commandées :</h3>
+                    <div id="ordered-pizzas" class="pizza-list">
+                        <!-- Liste des pizzas commandées -->
+                    </div>
+                    <button id="new-pizza-button" class="add-button new-pizza-button">Nouvelle Pizza</button>
+                </div>
+                <div>
+                    <h3>Prix Total :</h3>
+                    <p id="total-price">0 €</p>
+                </div>
+                <button id="confirm-order" class="add-button confirm-button">Confirmer la commande</button>
+            </div>
         </div>
     </div>
 <script>
@@ -151,14 +155,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const pizzaImage = document.getElementById("pizza-image");
     const crustSelect = document.getElementById("crust-select");
     const baseSelect = document.getElementById("base-select");
+    const sizeOptions = document.querySelectorAll("input[name='size']");
     const ingredientCheckboxes = document.querySelectorAll(".ingredient-item input[type='checkbox']");
     const addButton = document.getElementById("add-button");
     const orderedPizzasList = document.getElementById("ordered-pizzas");
     const selectedIngredientsList = document.getElementById("selected-ingredients");
     const newPizzaButton = document.getElementById("new-pizza-button");
+    const totalPriceElement = document.getElementById("total-price");
+
+    let pizzas = [];
 
     function clearForm() {
-        const sizeOptions = document.querySelectorAll("input[name='size']");
         sizeOptions.forEach(option => option.checked = false);
         crustSelect.disabled = true;
         crustSelect.value = "";
@@ -171,6 +178,51 @@ document.addEventListener("DOMContentLoaded", function() {
         addButton.disabled = true;
         pizzaImage.innerHTML = "";
         selectedIngredientsList.innerHTML = "";
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        let totalPrice = 0;
+        const selectedCrust = crustSelect.options[crustSelect.selectedIndex];
+        const selectedBase = baseSelect.options[baseSelect.selectedIndex];
+
+        sizeOptions.forEach(option => {
+            if (option.checked) {
+                totalPrice += parseFloat(option.getAttribute("data-price"));
+            }
+        });
+
+        if (selectedCrust && selectedCrust.value) {
+            totalPrice += parseFloat(selectedCrust.getAttribute("data-price"));
+        }
+
+        if (selectedBase && selectedBase.value) {
+            totalPrice += parseFloat(selectedBase.getAttribute("data-price"));
+        }
+
+        ingredientCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                totalPrice += parseFloat(checkbox.getAttribute("data-price"));
+            }
+        });
+
+        totalPriceElement.textContent = totalPrice.toFixed(2) + " €";
+    }
+
+    function updatePizzaList() {
+        orderedPizzasList.innerHTML = '';
+        pizzas.forEach((pizza, index) => {
+            const pizzaSummary = document.createElement("div");
+            pizzaSummary.className = "pizza-item";
+            pizzaSummary.innerHTML = `
+                <h4>Pizza ${index + 1}</h4>
+                <p><strong>Taille :</strong> ${pizza.size}</p>
+                <p><strong>Pâte :</strong> ${pizza.crust}</p>
+                <p><strong>Sauce :</strong> ${pizza.base}</p>
+                <p><strong>Ingrédients :</strong> ${pizza.ingredients.join(", ")}</p>
+            `;
+            orderedPizzasList.appendChild(pizzaSummary);
+        });
     }
 
     form.addEventListener("change", function() {
@@ -178,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const size = formData.get("size");
         const crust = formData.get("crust");
         const base = formData.get("base");
-        const ingredients = formData.getAll("ingredients");
+        const ingredients = formData.getAll("ingredient");
 
         if (size) {
             crustSelect.disabled = false;
@@ -225,23 +277,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (crust) {
             const crustImagePath = "images/" + crust.toLowerCase() + ".png";
-            console.log("Crust image path:", crustImagePath);
             appendImage(crustImagePath, crust, 1);
         }
 
         if (base) {
             const baseImagePath = "images/" + base.toLowerCase() + ".png";
-            console.log("Base image path:", baseImagePath);
             appendImage(baseImagePath, base, 2);
         }
 
         ingredients.forEach((ingredientName, index) => {
             if (ingredientName) {
                 const ingredientImagePath = "images/" + ingredientName.toLowerCase() + ".png";
-                console.log("Ingredient image path:", ingredientImagePath);
                 appendImage(ingredientImagePath, ingredientName, index + 3);
-            } else {
-                console.error("Ingredient name is empty");
             }
         });
 
@@ -266,6 +313,8 @@ document.addEventListener("DOMContentLoaded", function() {
             ingredientItem.textContent = ingredient;
             selectedIngredientsList.appendChild(ingredientItem);
         });
+
+        updateTotalPrice();
     });
 
     form.addEventListener("submit", function(event) {
@@ -275,19 +324,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const size = formData.get("size");
         const crust = formData.get("crust");
         const base = formData.get("base");
-        const ingredients = formData.getAll("ingredients");
+        const ingredients = formData.getAll("ingredient");
 
         if (size && crust && base) {
-            const pizzaSummary = document.createElement("div");
-            pizzaSummary.className = "pizza-item";
-            pizzaSummary.innerHTML = `
-                <p><strong>Taille :</strong> ${size}</p>
-                <p><strong>Pâte :</strong> ${crust}</p>
-                <p><strong>Sauce :</strong> ${base}</p>
-                <p><strong>Ingrédients :</strong> ${ingredients.join(", ")}</p>
-            `;
+            const pizza = {
+                size: size,
+                crust: crust,
+                base: base,
+                ingredients: ingredients
+            };
 
-            orderedPizzasList.appendChild(pizzaSummary);
+            pizzas.push(pizza);
+
+            updatePizzaList();
 
             clearForm();
         }
@@ -297,16 +346,37 @@ document.addEventListener("DOMContentLoaded", function() {
         clearForm();
     });
 
+    document.getElementById("confirm-order").addEventListener("click", function() {
+        console.log("Commande confirmée:", pizzas);
+    });
+
     const selects = document.querySelectorAll("select");
     selects.forEach(select => {
         select.addEventListener("change", function() {
             this.blur();
         });
     });
+
+    ingredientCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function() {
+            updateTotalPrice();
+        });
+    });
+
+    crustSelect.addEventListener("change", function() {
+        updateTotalPrice();
+    });
+
+    baseSelect.addEventListener("change", function() {
+        updateTotalPrice();
+    });
+
+    sizeOptions.forEach(option => {
+        option.addEventListener("change", function() {
+            updateTotalPrice();
+        });
+    });
 });
-
-
-
 
 </script>
 </body>

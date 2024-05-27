@@ -174,9 +174,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
     appearance: none; /* Remove default arrow */
-    background-image: url('images/dropdown-arrow.png'); /* Custom arrow */
-    background-repeat: no-repeat;
-    background-position: right 10px center;
+
 }
 
 .dropdown select:focus {
