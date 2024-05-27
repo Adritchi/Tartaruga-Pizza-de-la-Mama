@@ -3,6 +3,6 @@
  xsi:noNamespaceSchemaLocation="size.xsd">
 <size name="XL" size="40 cm" price="10"/>
 <size name="L" size="30 cm" price="8"/>
-<size name="M" size="20 cm" price="6"/>
+<size name="M" size="20 cm" price="7"/>
 
 </sizes>

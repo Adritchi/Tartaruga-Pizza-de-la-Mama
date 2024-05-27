@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <crusts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="crust.xsd">
 	<crust name="Fine" price="1.00" />
-	<crust name="Grosse" price="2.00" />
-	<crust name="CHeezsy" price="3.00" />
+	<crust name="Epaisse" price="2.00" />
+	<crust name="Cheesy" price="3.00" />
 </crusts>
 

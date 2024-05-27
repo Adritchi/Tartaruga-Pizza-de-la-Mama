@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bases xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="bases.xsd">
 	<base name="Sauce Tomate" price="1.00" />
-	<base name="Sauce Blanche" price="2.00" />
+	<base name="Sauce Crème" price="2.00" />
 
 </bases>

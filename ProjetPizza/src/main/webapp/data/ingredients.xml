@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ingredients xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingredients.xsd">
-	<ingredient name="Flour" price="1.00"/>
-	<ingredient name="Sugar" price="2.00"/>
-	<ingredient name="Eggs" price="3.00"/>
-	<ingredient name="Milk" price="4.00"/>
-	<ingredient name="Butter" price="5.00"/>
+    <ingredient name="Tomates" price="1.50"/>
+    <ingredient name="Champignons" price="2.50"/>
+    <ingredient name="Jambons" price="2.00"/>
+    <ingredient name="Olives" price="1.00"/>
+    <ingredient name="Chorizo" price="1.30"/>
+    <ingredient name="Oignons" price="1.10"/>
+    <ingredient name="Basilic" price="0.50"/>
+    <ingredient name="Truffe" price="4.00"/>
+    <ingredient name="Emmental" price="1.80"/>
+    <ingredient name="Boeuf" price="3.00"/>
+    <ingredient name="Poulet" price="3.00"/>
 </ingredients>
