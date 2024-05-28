@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class OrderServlet extends HttpServlet {
                 String size = request.getParameter("pizza" + i + "Size");
                 if (size == null) break;
                 String crust = request.getParameter("pizza" + i + "Crust");
-                String sauce = request.getParameter("pizza" + i + "Base");
+                String base = request.getParameter("pizza" + i + "Base");
 
                 List<Ingredient> ingredients = new ArrayList<>();
                 for (int j = 0; ; j++) {
@@ -35,10 +37,11 @@ public class OrderServlet extends HttpServlet {
                     ingredients.add(new Ingredient(ingredient, "0")); // Replace "0" with the actual price if necessary
                 }
 
-                pizzas.add(new Pizza(size, crust, sauce, ingredients));
+                pizzas.add(new Pizza(size, crust, base, ingredients));
             }
 
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            // Generate the next orderId
+            int orderId = Database.getNextOrderId();
             Order order = new Order(orderId, pizzas);
 
             Database.saveOrder(order);
@@ -49,6 +52,7 @@ public class OrderServlet extends HttpServlet {
             System.out.println("Order successfully saved."); // Confirmation message
 
         } catch (Exception e) {
+            // Handle exceptions
             System.err.println("Error in OrderServlet: " + e.getMessage());
             e.printStackTrace();
             throw new ServletException("Error saving order", e);

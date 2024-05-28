@@ -39,8 +39,7 @@
                 <h2>Plus d'un Million de Possibilités</h2>
                 <div class="customization-details">
                     <form id="customize-form" action="customize" method="post">
-                         <input type="hidden" name="orderId" value="1">
-                        <div class="customization-group">
+                            <div class="customization-group">
                             <h2>Taille</h2>
                             <div class="options">
                                 <% List<Size> sizes = Database.getSizes(); %>
@@ -162,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectedIngredientsList = document.getElementById("selected-ingredients");
     const newPizzaButton = document.getElementById("new-pizza-button");
     const totalPriceElement = document.getElementById("total-price");
+    const confirmOrderButton = document.getElementById("confirm-order");
 
     let pizzas = [];
     let totalPrice = 0; // Initialize total price
@@ -361,6 +361,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirm-order").addEventListener("click", function() {
+    	
+        if (pizzas.length === 0) {
+            alert("Veuillez ajouter au moins une pizza avant de confirmer la commande.");
+            event.preventDefault();
+            return;
+        }
+    	
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/ProjetPizza/order", true);  // Corrigez l'URL ici
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -368,6 +375,8 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 alert("Commande confirmée et enregistrée avec succès.");
+            } else if (xhr.readyState === 4) {
+                alert("Une erreur est survenue lors de l'enregistrement de la commande.");
             }
         };
 

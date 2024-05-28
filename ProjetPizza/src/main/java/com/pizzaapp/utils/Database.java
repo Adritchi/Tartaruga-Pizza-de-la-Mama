@@ -55,41 +55,36 @@ public class Database {
     }
 
  // Save an order to the XML file
-    public static void saveOrder(Order order) throws Exception {
-        Document doc = getDocument(ORDER_FILE_PATH);
-        Element root = doc.getDocumentElement();
+    	public static synchronized void saveOrder(Order order) throws Exception {
+            Document doc = getDocument(ORDER_FILE_PATH);
+            Element root = doc.getDocumentElement();
 
-        NodeList orderNodes = doc.getElementsByTagName("order");
-        boolean orderExists = false;
-
-        for (int i = 0; i < orderNodes.getLength(); i++) {
-            Node orderNode = orderNodes.item(i);
-            if (orderNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element orderElement = (Element) orderNode;
-                if (Integer.parseInt(orderElement.getAttribute("id")) == order.getId()) {
-                    // Clear existing pizzas
-                    NodeList pizzaNodes = orderElement.getElementsByTagName("pizza");
-                    while (pizzaNodes.getLength() > 0) {
-                        orderElement.removeChild(pizzaNodes.item(0));
-                    }
-                    // Add new pizzas
-                    addPizzasToOrderElement(doc, orderElement, order.getPizzas());
-                    orderExists = true;
-                    break;
-                }
-            }
-        }
-
-        if (!orderExists) {
+            int orderId = order.getId();
             Element orderElement = doc.createElement("order");
-            orderElement.setAttribute("id", String.valueOf(order.getId()));
-            addPizzasToOrderElement(doc, orderElement, order.getPizzas());
+            orderElement.setAttribute("id", String.valueOf(orderId));
+
+            for (Pizza pizza : order.getPizzas()) {
+                Element pizzaElement = doc.createElement("pizza");
+                pizzaElement.setAttribute("size", pizza.getSize());
+                pizzaElement.setAttribute("crust", pizza.getCrust());
+                pizzaElement.setAttribute("sauce", pizza.getSauce());
+
+                for (Ingredient ingredient : pizza.getIngredients()) {
+                    Element ingredientElement = doc.createElement("ingredient");
+                    ingredientElement.setTextContent(ingredient.getName());
+                    pizzaElement.appendChild(ingredientElement);
+                }
+
+                orderElement.appendChild(pizzaElement);
+            }
+
             root.appendChild(orderElement);
+
+            saveDocument(doc, ORDER_FILE_PATH);
+            System.out.println("Order saved to " + ORDER_FILE_PATH);
         }
 
-        saveDocument(doc, ORDER_FILE_PATH);
-        System.out.println("Order saved to " + ORDER_FILE_PATH);
-    }
+
 
     private static void addPizzasToOrderElement(Document doc, Element orderElement, List<Pizza> pizzas) {
         for (Pizza pizza : pizzas) {
@@ -383,8 +378,20 @@ public class Database {
         transformer.transform(source, result);
     }
     
-   
-    
+    public static synchronized int getNextOrderId() throws Exception {
+        Document doc = getDocument(ORDER_FILE_PATH);
+        NodeList orderNodes = doc.getElementsByTagName("order");
+        int maxOrderId = 0;
+        for (int i = 0; i < orderNodes.getLength(); i++) {
+            Element orderElement = (Element) orderNodes.item(i);
+            int orderId = Integer.parseInt(orderElement.getAttribute("id"));
+            if (orderId > maxOrderId) {
+                maxOrderId = orderId;
+            }
+        }
+        return maxOrderId + 1;
+    }
+
 
 
 }
