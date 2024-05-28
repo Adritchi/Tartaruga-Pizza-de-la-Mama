@@ -214,22 +214,6 @@ document.addEventListener("DOMContentLoaded", function() {
         totalPriceElement.textContent = (totalPrice + currentPizzaPrice).toFixed(2) + " €";
     }
 
-    function updatePizzaList() {
-        orderedPizzasList.innerHTML = '';
-        pizzas.forEach((pizza, index) => {
-            const pizzaSummary = document.createElement("div");
-            pizzaSummary.className = "pizza-item";
-            pizzaSummary.innerHTML = `
-                <h4>Pizza ${index + 1}</h4>
-                <p><strong>Taille :</strong> ${pizza.size}</p>
-                <p><strong>Pâte :</strong> ${pizza.crust}</p>
-                <p><strong>Sauce :</strong> ${pizza.base}</p>
-                <p><strong>Ingrédients :</strong> ${pizza.ingredients.join(", ")}</p>
-            `;
-            orderedPizzasList.appendChild(pizzaSummary);
-        });
-    }
-
     form.addEventListener("change", function() {
         const formData = new FormData(form);
         const size = formData.get("size");
@@ -321,6 +305,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
         updateCurrentPizzaPrice();
     });
+    
+    function updatePizzaList() {
+    	console.log(orderedPizzasList)
+        orderedPizzasList.innerHTML = '';
+        pizzas.forEach((pizza, index) => {
+            const pizzaSummary = document.createElement("div");
+            pizzaSummary.className = "pizza-item";
+            pizzaSummary.innerHTML = `
+                <h4>Pizza ${index + 1}</h4>
+                <p><strong>Taille :</strong> ${pizza.size}</p>
+                <p><strong>Pâte :</strong> ${pizza.crust}</p>
+                <p><strong>Sauce :</strong> ${pizza.base}</p>
+                <p><strong>Ingrédients :</strong> ${pizza.ingredients.join(", ")}</p>
+            `;
+            orderedPizzasList.appendChild(pizzaSummary);
+        });
+    }
 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -345,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const currentPizzaPrice = calculateCurrentPizzaPrice();
             totalPrice += currentPizzaPrice;
 
+            console.log(pizzas);
             updatePizzaList();
 
             // Reset only the display of the current pizza price
