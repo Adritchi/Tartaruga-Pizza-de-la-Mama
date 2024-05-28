@@ -269,33 +269,47 @@ document.addEventListener("DOMContentLoaded", function() {
         pizzaImage.innerHTML = "";
 
         // Fonction pour ajouter des images des ingrédients à la prévisualisation
-        function appendImage(src, alt, zIndex) {
+       function appendImage(src, alt, zIndex, isLarge = false, isIngredient = false) {
             const img = document.createElement("img");
             img.src = src;
             img.alt = alt;
             img.style.zIndex = zIndex;
             img.style.position = 'absolute';
-            img.className = "ingredient-preview";
+            img.style.top = '50%';
+            img.style.left = '50%';
+            img.style.transform = 'translate(-50%, -50%)';
+            img.style.height = 'auto';
+            img.style.objectFit = 'cover';
+
+            if (isLarge) {
+                img.style.width = '130%'; // Largeur plus grande pour pâte et sauce
+            } else if (isIngredient) {
+                img.style.width = '80%'; // Largeur réduite pour les ingrédients
+            }
+
+            img.className = "ingredient-preview"; // Classe commune pour tous les ingrédients
             img.onerror = function() {
                 console.error(`Image not found at ${src}`);
             };
             pizzaImage.appendChild(img);
         }
 
+
+
         if (crust) {
             const crustImagePath = "images/" + crust.toLowerCase() + ".png";
-            appendImage(crustImagePath, crust, 1);
+            appendImage(crustImagePath, crust, 1, true); // true pour indiquer que l'image doit être grande
         }
 
         if (base) {
             const baseImagePath = "images/" + base.toLowerCase() + ".png";
-            appendImage(baseImagePath, base, 2);
+            appendImage(baseImagePath, base, 2, true); // true pour indiquer que l'image doit être grande
         }
 
         ingredients.forEach((ingredientName, index) => {
             if (ingredientName) {
                 const ingredientImagePath = "images/" + ingredientName.toLowerCase() + ".png";
-                appendImage(ingredientImagePath, ingredientName, index + 3);
+                appendImage(ingredientImagePath, ingredientName, index + 3, false, true); // false pour isLarge, true pour isIngredient
             }
         });
 
