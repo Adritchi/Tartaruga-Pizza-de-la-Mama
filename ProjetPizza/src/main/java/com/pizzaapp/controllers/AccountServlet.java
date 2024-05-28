@@ -4,15 +4,25 @@ import com.pizzaapp.models.User;
 import com.pizzaapp.utils.Database;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet pour gérer les opérations du compte utilisateur.
+ */
 public class AccountServlet extends HttpServlet {
-    
+
+    /**
+     * Gère les requêtes POST pour mettre à jour les informations du compte utilisateur.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(); // Récupérer la session actuelle
@@ -46,6 +56,14 @@ public class AccountServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/jsp/account.jsp");
     }
 
+    /**
+     * Gère les requêtes GET pour afficher la page de compte utilisateur.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Transférer la requête à la page JSP du compte utilisateur

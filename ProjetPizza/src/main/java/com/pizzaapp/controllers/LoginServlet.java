@@ -10,10 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet pour gérer les opérations de connexion des utilisateurs.
+ */
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L; // Identifiant de version pour la sérialisation
 
-    // Méthode doPost pour gérer les requêtes POST
+    /**
+     * Gère les requêtes POST pour connecter un utilisateur.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupérer les paramètres du formulaire de connexion

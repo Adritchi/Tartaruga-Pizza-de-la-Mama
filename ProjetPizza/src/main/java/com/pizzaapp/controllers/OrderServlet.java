@@ -14,11 +14,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// Annotation pour indiquer que cette servlet est accessible via l'URL "/order"
+/**
+ * Servlet pour gérer les opérations de commande de pizzas.
+ */
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
 
-    // Méthode doPost pour gérer les requêtes POST
+    /**
+     * Gère les requêtes POST pour créer et enregistrer une nouvelle commande de pizzas.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("OrderServlet doPost method called."); // Message de débogage

@@ -4,7 +4,6 @@ import com.pizzaapp.models.*;
 import com.pizzaapp.utils.Database;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +11,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet pour gérer la personnalisation des pizzas.
+ */
 public class CustomizationServlet extends HttpServlet {
     private static int orderIdCounter = 1;
 
+    /**
+     * Gère les requêtes POST pour personnaliser et commander une pizza.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupérer l'utilisateur de la session
@@ -73,6 +83,14 @@ public class CustomizationServlet extends HttpServlet {
         request.getRequestDispatcher("jsp/customize.jsp").forward(request, response);
     }
 
+    /**
+     * Gère les requêtes GET pour afficher la page de personnalisation de la pizza.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupérer l'utilisateur de la session

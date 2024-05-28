@@ -20,6 +20,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe utilitaire pour les opérations de base de données utilisant des fichiers XML.
+ */
 public class Database {
     private static ServletContext context;
 
@@ -30,7 +33,11 @@ public class Database {
     private static String CRUST_FILE_PATH;
     private static String INGREDIENT_FILE_PATH;
 
-    // Méthode pour initialiser les chemins des fichiers XML
+    /**
+     * Initialise les chemins des fichiers XML.
+     *
+     * @param servletContext le contexte de servlet pour obtenir les chemins réels des fichiers.
+     */
     public static void initialize(ServletContext servletContext) {
         context = servletContext;
         ORDER_FILE_PATH = context.getRealPath("/data/orders.xml");
@@ -48,6 +55,12 @@ public class Database {
         System.out.println("INGREDIENT_FILE_PATH: " + INGREDIENT_FILE_PATH);
     }
 
+    /**
+     * Retourne le chemin réel pour un chemin relatif donné, en créant les répertoires parents si nécessaire.
+     *
+     * @param relativePath le chemin relatif à convertir en chemin réel.
+     * @return le chemin réel correspondant.
+     */
     private static String getRealPath(String relativePath) {
         String fullPath = context.getRealPath(relativePath);
         File file = new File(fullPath);
@@ -55,7 +68,12 @@ public class Database {
         return fullPath;
     }
 
-    // Sauvegarder une commande dans le fichier XML
+    /**
+     * Sauvegarde une commande dans le fichier XML.
+     *
+     * @param order la commande à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static synchronized void saveOrder(Order order) throws Exception {
         Document doc = getDocument(ORDER_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -85,7 +103,13 @@ public class Database {
         System.out.println("Order saved to " + ORDER_FILE_PATH);
     }
 
-    // Ajouter des pizzas à un élément commande
+    /**
+     * Ajoute des pizzas à un élément de commande dans le document XML.
+     *
+     * @param doc le document XML.
+     * @param orderElement l'élément de commande auquel ajouter les pizzas.
+     * @param pizzas la liste des pizzas à ajouter.
+     */
     private static void addPizzasToOrderElement(Document doc, Element orderElement, List<Pizza> pizzas) {
         for (Pizza pizza : pizzas) {
             Element pizzaElement = doc.createElement("pizza");
@@ -103,7 +127,12 @@ public class Database {
         }
     }
 
-    // Récupérer toutes les commandes à partir du fichier XML
+    /**
+     * Récupère toutes les commandes à partir du fichier XML.
+     *
+     * @return une liste de commandes.
+     * @throws Exception si une erreur survient lors de la récupération des commandes.
+     */
     public static List<Order> getOrders() throws Exception {
         Document doc = getDocument(ORDER_FILE_PATH);
         NodeList orderNodes = doc.getElementsByTagName("order");
@@ -141,7 +170,12 @@ public class Database {
         return orders;
     }
 
-    // Sauvegarder un utilisateur dans le fichier XML
+    /**
+     * Sauvegarde un utilisateur dans le fichier XML.
+     *
+     * @param user l'utilisateur à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static void saveUser(User user) throws Exception {
         Document doc = getDocument(USER_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -178,7 +212,12 @@ public class Database {
         System.out.println("User saved to " + USER_FILE_PATH);
     }
 
-    // Récupérer tous les utilisateurs à partir du fichier XML
+    /**
+     * Récupère tous les utilisateurs à partir du fichier XML.
+     *
+     * @return une liste d'utilisateurs.
+     * @throws Exception si une erreur survient lors de la récupération des utilisateurs.
+     */
     public static List<User> getUsers() throws Exception {
         Document doc = getDocument(USER_FILE_PATH);
         NodeList userNodes = doc.getElementsByTagName("user");
@@ -199,7 +238,12 @@ public class Database {
         return users;
     }
 
-    // Obtenir le prochain ID utilisateur
+    /**
+     * Obtient le prochain ID utilisateur.
+     *
+     * @return le prochain ID utilisateur.
+     * @throws Exception si une erreur survient lors de la récupération des utilisateurs.
+     */
     public static int getNextUserId() throws Exception {
         List<User> users = getUsers();
         int maxId = 0;
@@ -211,7 +255,12 @@ public class Database {
         return maxId + 1;
     }
 
-    // Sauvegarder un ingrédient dans le fichier XML
+    /**
+     * Sauvegarde un ingrédient dans le fichier XML.
+     *
+     * @param ingredient l'ingrédient à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static void saveIngredient(Ingredient ingredient) throws Exception {
         Document doc = getDocument(INGREDIENT_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -224,7 +273,12 @@ public class Database {
         System.out.println("Ingredient saved to " + INGREDIENT_FILE_PATH);
     }
 
-    // Récupérer tous les ingrédients à partir du fichier XML
+    /**
+     * Récupère tous les ingrédients à partir du fichier XML.
+     *
+     * @return une liste d'ingrédients.
+     * @throws Exception si une erreur survient lors de la récupération des ingrédients.
+     */
     public static List<Ingredient> getIngredients() throws Exception {
         Document doc = getDocument(INGREDIENT_FILE_PATH);
         NodeList ingredientNodes = doc.getElementsByTagName("ingredient");
@@ -242,7 +296,12 @@ public class Database {
         return ingredients;
     }
 
-    // Sauvegarder une taille dans le fichier XML
+    /**
+     * Sauvegarde une taille dans le fichier XML.
+     *
+     * @param size la taille à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static void saveSize(String size) throws Exception {
         Document doc = getDocument(SIZE_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -255,16 +314,21 @@ public class Database {
         System.out.println("Size saved to " + SIZE_FILE_PATH);
     }
 
-    // Récupérer toutes les tailles à partir du fichier XML
+    /**
+     * Récupère toutes les tailles à partir du fichier XML.
+     *
+     * @return une liste de tailles.
+     * @throws Exception si une erreur survient lors de la récupération des tailles.
+     */
     public static List<Size> getSizes() throws Exception {
         Document doc = getDocument(SIZE_FILE_PATH);
         NodeList sizeNodes = doc.getElementsByTagName("size");
         List<Size> sizes = new ArrayList<>();
 
         for (int i = 0; i < sizeNodes.getLength(); i++) {
-            Node sizetNode = sizeNodes.item(i);
-            if (sizetNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element sizeElement = (Element) sizetNode;
+            Node sizeNode = sizeNodes.item(i);
+            if (sizeNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element sizeElement = (Element) sizeNode;
                 String name = sizeElement.getAttribute("name");
                 String size = sizeElement.getAttribute("size");
                 String price = sizeElement.getAttribute("price");
@@ -274,7 +338,12 @@ public class Database {
         return sizes;
     }
 
-    // Sauvegarder une base dans le fichier XML
+    /**
+     * Sauvegarde une base dans le fichier XML.
+     *
+     * @param base la base à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static void saveBase(String base) throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -287,7 +356,12 @@ public class Database {
         System.out.println("Base saved to " + BASE_FILE_PATH);
     }
 
-    // Récupérer toutes les bases à partir du fichier XML
+    /**
+     * Récupère toutes les bases à partir du fichier XML.
+     *
+     * @return une liste de bases.
+     * @throws Exception si une erreur survient lors de la récupération des bases.
+     */
     public static List<Bases> getBases() throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
         NodeList baseNodes = doc.getElementsByTagName("base");
@@ -305,7 +379,12 @@ public class Database {
         return bases;
     }
 
-    // Sauvegarder une croûte dans le fichier XML
+    /**
+     * Sauvegarde une croûte dans le fichier XML.
+     *
+     * @param crust la croûte à sauvegarder.
+     * @throws Exception si une erreur survient lors de la sauvegarde.
+     */
     public static void saveCrust(String crust) throws Exception {
         Document doc = getDocument(CRUST_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -318,7 +397,12 @@ public class Database {
         System.out.println("Crust saved to " + CRUST_FILE_PATH);
     }
 
-    // Récupérer toutes les croûtes à partir du fichier XML
+    /**
+     * Récupère toutes les croûtes à partir du fichier XML.
+     *
+     * @return une liste de croûtes.
+     * @throws Exception si une erreur survient lors de la récupération des croûtes.
+     */
     public static List<Crust> getCrusts() throws Exception {
         Document doc = getDocument(CRUST_FILE_PATH);
         NodeList crustNodes = doc.getElementsByTagName("crust");
@@ -336,7 +420,13 @@ public class Database {
         return crusts;
     }
 
-    // Obtenir le document XML depuis le fichier ou en créer un nouveau s'il n'existe pas
+    /**
+     * Obtient le document XML depuis le fichier ou en crée un nouveau s'il n'existe pas.
+     *
+     * @param filePath le chemin du fichier XML.
+     * @return le document XML.
+     * @throws Exception si une erreur survient lors de la récupération ou de la création du document.
+     */
     private static Document getDocument(String filePath) throws Exception {
         File file = new File(filePath);
         if (!file.exists()) {
@@ -347,7 +437,13 @@ public class Database {
         return dBuilder.parse(file);
     }
 
-    // Créer un nouveau document avec un élément racine
+    /**
+     * Crée un nouveau document avec un élément racine.
+     *
+     * @param filePath le chemin du fichier XML.
+     * @throws ParserConfigurationException si une erreur survient lors de la configuration du parseur.
+     * @throws TransformerException si une erreur survient lors de la transformation du document.
+     */
     private static void createNewDocument(String filePath) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -361,7 +457,13 @@ public class Database {
         saveDocument(doc, filePath);
     }
 
-    // Sauvegarder le document dans le fichier XML
+    /**
+     * Sauvegarde le document dans le fichier XML.
+     *
+     * @param doc le document XML à sauvegarder.
+     * @param filePath le chemin du fichier XML.
+     * @throws TransformerException si une erreur survient lors de la transformation du document.
+     */
     private static void saveDocument(Document doc, String filePath) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -371,7 +473,12 @@ public class Database {
         transformer.transform(source, result);
     }
 
-    // Obtenir le prochain ID de commande
+    /**
+     * Obtient le prochain ID de commande.
+     *
+     * @return le prochain ID de commande.
+     * @throws Exception si une erreur survient lors de la récupération des commandes.
+     */
     public static synchronized int getNextOrderId() throws Exception {
         Document doc = getDocument(ORDER_FILE_PATH);
         NodeList orderNodes = doc.getElementsByTagName("order");

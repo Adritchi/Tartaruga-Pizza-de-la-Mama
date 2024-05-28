@@ -10,11 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet pour gérer l'inscription des utilisateurs.
+ */
 // Annotation pour indiquer que cette servlet est accessible via l'URL spécifique si besoin
 //@WebServlet("/register") // (désactiver si l'URL de la servlet est configurée différemment)
 public class RegisterServlet extends HttpServlet {
 
-    // Méthode doPost pour gérer les requêtes POST
+    /**
+     * Gère les requêtes POST pour inscrire un nouvel utilisateur.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupérer les paramètres du formulaire d'inscription

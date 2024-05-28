@@ -11,11 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-// Annotation pour indiquer que cette servlet est accessible via l'URL "/ingredients"
+/**
+ * Servlet pour gérer les opérations sur les ingrédients. Non utile au niveau d'avancement actuel du projet.
+ */
 @WebServlet("/ingredients")
 public class IngredientServlet extends HttpServlet {
-    
-    // Méthode doGet pour gérer les requêtes GET
+
+    /**
+     * Gère les requêtes GET en récupérant la liste des ingrédients depuis la base de données et en transférant la requête à la page JSP ingredients.jsp.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -31,13 +40,20 @@ public class IngredientServlet extends HttpServlet {
         request.getRequestDispatcher("jsp/ingredients.jsp").forward(request, response);
     }
 
-    // Méthode doPost pour gérer les requêtes POST
+    /**
+     * Gère les requêtes POST en ajoutant un nouvel ingrédient à la base de données.
+     *
+     * @param request  la requête HttpServletRequest.
+     * @param response la réponse HttpServletResponse.
+     * @throws ServletException si une erreur de traitement survient.
+     * @throws IOException      si une erreur d'entrée/sortie survient.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupérer les paramètres du formulaire pour le nom et le prix de l'ingrédient
         String ingredientName = request.getParameter("name");
         String ingredientPrice = request.getParameter("price");
-        
+
         // Vérifier que les paramètres ne sont pas null ou vides
         if (ingredientName != null && !ingredientName.trim().isEmpty() && ingredientPrice != null && !ingredientPrice.trim().isEmpty()) {
             // Créer un nouvel objet Ingredient avec les paramètres récupérés
