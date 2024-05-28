@@ -4,6 +4,7 @@ body {
     padding: 0;
 }
 
+/* Style pour l'en-tête de la page */
 .header {
     background: url('images/pizza-banner.webp') no-repeat center center;
     background-size: cover;
@@ -18,6 +19,7 @@ body {
     font-size: 3em;
 }
 
+/* Style pour le message de bienvenue de l'utilisateur */
 .user-greeting {
     position: absolute;
     right: 20px;
@@ -32,6 +34,7 @@ body {
     font-weight: bold;
 }
 
+/* Style pour les liens de connexion et déconnexion */
 .auth-link {
     font-size: 1.2em;
     color: white;
@@ -44,6 +47,7 @@ body {
     text-decoration: underline;
 }
 
+/* Style pour la barre de navigation */
 .navbar {
     text-align: center;
     margin: 20px 0;
@@ -63,15 +67,18 @@ body {
     background-color: #e2e6ea;
 }
 
+/* Style pour le conteneur principal */
 .container {
     padding: 20px;
     text-align: center;
 }
 
+/* Style pour les sections de contenu */
 .section {
     margin: 50px 0;
 }
 
+/* Style pour les fonctionnalités présentées sur la page */
 .features {
     display: flex;
     justify-content: center;
@@ -101,7 +108,7 @@ body {
     color: #555;
 }
 
-/* Custom styles for the customization page */
+/* Styles personnalisés pour la page de personnalisation */
 .customization-container {
     display: flex;
     justify-content: space-between;
@@ -125,6 +132,7 @@ body {
     width: 100%;
 }
 
+/* Style pour la prévisualisation de la pizza */
 .pizza-preview {
     width: 100%;
     max-width: 300px;
@@ -144,6 +152,7 @@ body {
     object-fit: cover;
 }
 
+/* Détails de la personnalisation */
 .customization-details {
     margin-top: 20px;
 }
@@ -159,10 +168,12 @@ body {
     color: #777;
 }
 
+/* Groupes de personnalisation */
 .customization-group {
     margin-bottom: 20px;
 }
 
+/* Style pour les menus déroulants */
 .dropdown select {
     width: 100%;
     padding: 10px;
@@ -173,14 +184,14 @@ body {
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s;
-    appearance: none; /* Remove default arrow */
-
+    appearance: none; /* Enlever la flèche par défaut */
 }
 
 .dropdown select:focus {
     background-color: #e2e6ea;
 }
 
+/* Style pour les ingrédients de la personnalisation */
 .customization-ingredients {
     display: flex;
     flex-wrap: wrap;
@@ -208,6 +219,7 @@ body {
     margin-right: 10px;
 }
 
+/* Bouton pour ajouter une pizza */
 .add-button {
     display: flex;
     align-items: center;
@@ -226,11 +238,13 @@ body {
     background-color: #0056b3;
 }
 
+/* Liste des pizzas commandées */
 #ordered-pizzas {
     list-style-type: none;
     padding: 0;
 }
 
+/* Style pour les éléments de la liste des pizzas */
 .pizza-list .pizza-item {
     background-color: #f8f9fa;
     padding: 10px;
@@ -249,6 +263,7 @@ body {
     font-size: 1.5em;
 }
 
+/* Bouton pour ajouter une nouvelle pizza */
 .new-pizza-button {
     background-color: #28a745;
 }
@@ -257,6 +272,7 @@ body {
     background-color: #218838;
 }
 
+/* Bouton pour confirmer la commande */
 .confirm-button {
     background-color: #007bff;
 }
@@ -265,6 +281,7 @@ body {
     background-color: #0056b3;
 }
 
+/* Liste des ingrédients sélectionnés */
 .ingredient-list {
     list-style: none;
     padding: 0;
@@ -278,6 +295,7 @@ body {
     margin-left: -1em;
 }
 
+/* Style pour les éléments de la liste des pizzas */
 .pizza-item p {
     margin: 5px 0;
     line-height: 1.5;
@@ -287,10 +305,10 @@ body {
     color: #333;
 }
 
+/* Style pour le prix total */
 .total-price {
     font-size: 1.5em;
     font-weight: bold;
     color: #333;
     margin: 10px 0;
 }
-

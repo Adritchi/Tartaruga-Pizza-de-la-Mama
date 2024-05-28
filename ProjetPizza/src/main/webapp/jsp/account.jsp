@@ -7,10 +7,12 @@
     <link rel="stylesheet" type="text/css" href="stylesacc.css">
 </head>
 <body>
+    <!-- En-tête de la page avec le titre et les options de connexion/déconnexion -->
     <div class="header">
         <h1>Mon Compte</h1>
         <div class="user-greeting">
             <%
+                // Récupérer l'utilisateur connecté à partir de la session
                 User user = (User) session.getAttribute("user");
                 if (user != null) {
             %>
@@ -26,13 +28,18 @@
             %>
         </div>
     </div>
+
+    <!-- Barre de navigation avec des liens vers différentes pages -->
     <div class="navbar">
         <a href="home.jsp">Accueil</a>
         <a href="customize.jsp">Je personnalise ma pizza</a>
         <a href="account.jsp">Mon Compte</a>
     </div>
+
+    <!-- Contenu principal de la page de compte -->
     <div class="container">
         <div class="account-form">
+            <!-- Formulaire de mise à jour des informations de compte -->
             <form action="<%=request.getContextPath()%>/account" method="post">
                 <div class="form-group">
                     <label for="name">Nom :</label>
@@ -53,13 +60,14 @@
                 <div class="form-group">
                     <button type="submit" class="btn">Sauvegarder</button>
                 </div>
-                 <%
+                <!-- Affichage d'un message de succès si présent dans la session -->
+                <%
                     String successMessage = (String) session.getAttribute("successMessage");
                     if (successMessage != null) {
                 %>
                     <p class="success-message"><%= successMessage %></p>
                     <%
-                        // Clear the message after displaying it
+                        // Supprimer le message après l'avoir affiché
                         session.removeAttribute("successMessage");
                     %>
                 <%

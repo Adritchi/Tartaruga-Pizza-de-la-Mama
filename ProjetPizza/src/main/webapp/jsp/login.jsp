@@ -7,10 +7,12 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsp/styleslogin.css">
 </head>
 <body>
+    <!-- En-tête de la page avec le titre et les options de connexion/déconnexion -->
     <div class="header">
         <h1>Connexion</h1>
         <div class="user-greeting">
             <%
+                // Récupérer l'utilisateur connecté à partir de la session
                 User user = (User) session.getAttribute("user");
                 if (user != null) {
             %>
@@ -26,14 +28,19 @@
             %>
         </div>
     </div>
+
+    <!-- Barre de navigation avec des liens vers différentes pages -->
     <div class="navbar">
         <a href="home.jsp">Accueil</a>
         <a href="customize.jsp">Je personnalise ma pizza</a>
         <a href="account.jsp">Mon Compte</a>
     </div>
+
+    <!-- Contenu principal de la page de connexion -->
     <div class="container">
         <div class="account-form">
             <h2>Connexion</h2>
+            <!-- Formulaire de connexion -->
             <form action="<%=request.getContextPath()%>/login" method="post">
                 <div class="form-group">
                     <label for="name">Nom :</label>
@@ -48,6 +55,7 @@
                 </div>
             </form>
             <p>Vous n'avez pas de compte ? <a href="<%=request.getContextPath()%>/jsp/register.jsp">Inscrivez-vous ici</a></p>
+            <!-- Affichage d'un message d'erreur en cas de problème de connexion -->
             <% if(request.getAttribute("error") != null) { %>
                 <p style="color:red;"><%= request.getAttribute("error") %></p>
             <% } %>

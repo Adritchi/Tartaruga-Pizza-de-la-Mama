@@ -30,8 +30,9 @@ public class Database {
     private static String CRUST_FILE_PATH;
     private static String INGREDIENT_FILE_PATH;
 
+    // Méthode pour initialiser les chemins des fichiers XML
     public static void initialize(ServletContext servletContext) {
-    	context = servletContext;
+        context = servletContext;
         ORDER_FILE_PATH = context.getRealPath("/data/orders.xml");
         USER_FILE_PATH = context.getRealPath("/data/users.xml");
         SIZE_FILE_PATH = context.getRealPath("/data/sizes.xml");
@@ -54,38 +55,37 @@ public class Database {
         return fullPath;
     }
 
- // Save an order to the XML file
-    	public static synchronized void saveOrder(Order order) throws Exception {
-            Document doc = getDocument(ORDER_FILE_PATH);
-            Element root = doc.getDocumentElement();
+    // Sauvegarder une commande dans le fichier XML
+    public static synchronized void saveOrder(Order order) throws Exception {
+        Document doc = getDocument(ORDER_FILE_PATH);
+        Element root = doc.getDocumentElement();
 
-            int orderId = order.getId();
-            Element orderElement = doc.createElement("order");
-            orderElement.setAttribute("id", String.valueOf(orderId));
+        int orderId = order.getId();
+        Element orderElement = doc.createElement("order");
+        orderElement.setAttribute("id", String.valueOf(orderId));
 
-            for (Pizza pizza : order.getPizzas()) {
-                Element pizzaElement = doc.createElement("pizza");
-                pizzaElement.setAttribute("size", pizza.getSize());
-                pizzaElement.setAttribute("crust", pizza.getCrust());
-                pizzaElement.setAttribute("sauce", pizza.getSauce());
+        for (Pizza pizza : order.getPizzas()) {
+            Element pizzaElement = doc.createElement("pizza");
+            pizzaElement.setAttribute("size", pizza.getSize());
+            pizzaElement.setAttribute("crust", pizza.getCrust());
+            pizzaElement.setAttribute("sauce", pizza.getSauce());
 
-                for (Ingredient ingredient : pizza.getIngredients()) {
-                    Element ingredientElement = doc.createElement("ingredient");
-                    ingredientElement.setTextContent(ingredient.getName());
-                    pizzaElement.appendChild(ingredientElement);
-                }
-
-                orderElement.appendChild(pizzaElement);
+            for (Ingredient ingredient : pizza.getIngredients()) {
+                Element ingredientElement = doc.createElement("ingredient");
+                ingredientElement.setTextContent(ingredient.getName());
+                pizzaElement.appendChild(ingredientElement);
             }
 
-            root.appendChild(orderElement);
-
-            saveDocument(doc, ORDER_FILE_PATH);
-            System.out.println("Order saved to " + ORDER_FILE_PATH);
+            orderElement.appendChild(pizzaElement);
         }
 
+        root.appendChild(orderElement);
 
+        saveDocument(doc, ORDER_FILE_PATH);
+        System.out.println("Order saved to " + ORDER_FILE_PATH);
+    }
 
+    // Ajouter des pizzas à un élément commande
     private static void addPizzasToOrderElement(Document doc, Element orderElement, List<Pizza> pizzas) {
         for (Pizza pizza : pizzas) {
             Element pizzaElement = doc.createElement("pizza");
@@ -103,9 +103,7 @@ public class Database {
         }
     }
 
-
-
- // Retrieve all orders from the XML file
+    // Récupérer toutes les commandes à partir du fichier XML
     public static List<Order> getOrders() throws Exception {
         Document doc = getDocument(ORDER_FILE_PATH);
         NodeList orderNodes = doc.getElementsByTagName("order");
@@ -124,7 +122,7 @@ public class Database {
                     Element pizzaElement = (Element) pizzaNodes.item(j);
                     String size = pizzaElement.getAttribute("size");
                     String crust = pizzaElement.getAttribute("crust");
-                    String sauce = pizzaElement.getAttribute("base"); // Assurez-vous d'utiliser 'base' pour correspondre à votre attribut
+                    String sauce = pizzaElement.getAttribute("sauce");
 
                     NodeList ingredientNodes = pizzaElement.getElementsByTagName("ingredient");
                     List<Ingredient> ingredients = new ArrayList<>();
@@ -143,7 +141,7 @@ public class Database {
         return orders;
     }
 
-    // Save a user to the XML file
+    // Sauvegarder un utilisateur dans le fichier XML
     public static void saveUser(User user) throws Exception {
         Document doc = getDocument(USER_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -180,7 +178,7 @@ public class Database {
         System.out.println("User saved to " + USER_FILE_PATH);
     }
 
-    // Retrieve all users from the XML file
+    // Récupérer tous les utilisateurs à partir du fichier XML
     public static List<User> getUsers() throws Exception {
         Document doc = getDocument(USER_FILE_PATH);
         NodeList userNodes = doc.getElementsByTagName("user");
@@ -201,7 +199,7 @@ public class Database {
         return users;
     }
 
-    // Get the next user ID
+    // Obtenir le prochain ID utilisateur
     public static int getNextUserId() throws Exception {
         List<User> users = getUsers();
         int maxId = 0;
@@ -213,7 +211,7 @@ public class Database {
         return maxId + 1;
     }
 
-    // Save an ingredient to the XML file
+    // Sauvegarder un ingrédient dans le fichier XML
     public static void saveIngredient(Ingredient ingredient) throws Exception {
         Document doc = getDocument(INGREDIENT_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -226,7 +224,7 @@ public class Database {
         System.out.println("Ingredient saved to " + INGREDIENT_FILE_PATH);
     }
 
-    // Retrieve all ingredients from the XML file
+    // Récupérer tous les ingrédients à partir du fichier XML
     public static List<Ingredient> getIngredients() throws Exception {
         Document doc = getDocument(INGREDIENT_FILE_PATH);
         NodeList ingredientNodes = doc.getElementsByTagName("ingredient");
@@ -244,10 +242,7 @@ public class Database {
         return ingredients;
     }
 
-
-
-
-    // Save a size to the XML file
+    // Sauvegarder une taille dans le fichier XML
     public static void saveSize(String size) throws Exception {
         Document doc = getDocument(SIZE_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -260,6 +255,7 @@ public class Database {
         System.out.println("Size saved to " + SIZE_FILE_PATH);
     }
 
+    // Récupérer toutes les tailles à partir du fichier XML
     public static List<Size> getSizes() throws Exception {
         Document doc = getDocument(SIZE_FILE_PATH);
         NodeList sizeNodes = doc.getElementsByTagName("size");
@@ -278,7 +274,7 @@ public class Database {
         return sizes;
     }
 
-    // Save a base to the XML file
+    // Sauvegarder une base dans le fichier XML
     public static void saveBase(String base) throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -291,26 +287,25 @@ public class Database {
         System.out.println("Base saved to " + BASE_FILE_PATH);
     }
 
-    // Retrieve all bases from the XML file
+    // Récupérer toutes les bases à partir du fichier XML
     public static List<Bases> getBases() throws Exception {
         Document doc = getDocument(BASE_FILE_PATH);
-        NodeList ingredientNodes = doc.getElementsByTagName("base");
+        NodeList baseNodes = doc.getElementsByTagName("base");
         List<Bases> bases = new ArrayList<>();
 
-        for (int i = 0; i < ingredientNodes.getLength(); i++) {
-            Node basesNode = ingredientNodes.item(i);
-            if (basesNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element ingredientElement = (Element) basesNode;
-                String name = ingredientElement.getAttribute("name");
-                String price = ingredientElement.getAttribute("price");
+        for (int i = 0; i < baseNodes.getLength(); i++) {
+            Node baseNode = baseNodes.item(i);
+            if (baseNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element baseElement = (Element) baseNode;
+                String name = baseElement.getAttribute("name");
+                String price = baseElement.getAttribute("price");
                 bases.add(new Bases(name, price));
             }
         }
         return bases;
     }
 
-
-    // Save a crust to the XML file
+    // Sauvegarder une croûte dans le fichier XML
     public static void saveCrust(String crust) throws Exception {
         Document doc = getDocument(CRUST_FILE_PATH);
         Element root = doc.getDocumentElement();
@@ -323,16 +318,16 @@ public class Database {
         System.out.println("Crust saved to " + CRUST_FILE_PATH);
     }
 
-    // Retrieve all crusts from the XML file
+    // Récupérer toutes les croûtes à partir du fichier XML
     public static List<Crust> getCrusts() throws Exception {
         Document doc = getDocument(CRUST_FILE_PATH);
         NodeList crustNodes = doc.getElementsByTagName("crust");
         List<Crust> crusts = new ArrayList<>();
 
         for (int i = 0; i < crustNodes.getLength(); i++) {
-            Node basesNode = crustNodes.item(i);
-            if (basesNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element crustElement = (Element) basesNode;
+            Node crustNode = crustNodes.item(i);
+            if (crustNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element crustElement = (Element) crustNode;
                 String name = crustElement.getAttribute("name");
                 String price = crustElement.getAttribute("price");
                 crusts.add(new Crust(name, price));
@@ -341,8 +336,7 @@ public class Database {
         return crusts;
     }
 
-
- // Get the document from the XML file, or create a new one if it doesn't exist
+    // Obtenir le document XML depuis le fichier ou en créer un nouveau s'il n'existe pas
     private static Document getDocument(String filePath) throws Exception {
         File file = new File(filePath);
         if (!file.exists()) {
@@ -353,8 +347,7 @@ public class Database {
         return dBuilder.parse(file);
     }
 
-    
-    // Create a new document with a root element
+    // Créer un nouveau document avec un élément racine
     private static void createNewDocument(String filePath) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -368,7 +361,7 @@ public class Database {
         saveDocument(doc, filePath);
     }
 
- // Save the document to the XML file
+    // Sauvegarder le document dans le fichier XML
     private static void saveDocument(Document doc, String filePath) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -377,7 +370,8 @@ public class Database {
         StreamResult result = new StreamResult(new File(filePath));
         transformer.transform(source, result);
     }
-    
+
+    // Obtenir le prochain ID de commande
     public static synchronized int getNextOrderId() throws Exception {
         Document doc = getDocument(ORDER_FILE_PATH);
         NodeList orderNodes = doc.getElementsByTagName("order");
@@ -391,7 +385,4 @@ public class Database {
         }
         return maxOrderId + 1;
     }
-
-
-
 }

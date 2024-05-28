@@ -12,12 +12,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AccountServlet extends HttpServlet {
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        HttpSession session = request.getSession(); // Récupérer la session actuelle
+        User user = (User) session.getAttribute("user"); // Récupérer l'utilisateur connecté à partir de la session
 
-        if (user != null) {
+        if (user != null) { // Vérifier si l'utilisateur est connecté
+            // Récupérer les paramètres du formulaire de modification du compte utilisateur
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
@@ -30,20 +32,23 @@ public class AccountServlet extends HttpServlet {
             user.setPassword(password);
 
             try {
-                Database.saveUser(user);
-                // Mettre à jour l'attribut de session
+                Database.saveUser(user); // Sauvegarder les modifications de l'utilisateur dans la base de données
+                // Mettre à jour l'attribut de session avec les nouvelles informations de l'utilisateur
                 session.setAttribute("user", user);
                 session.setAttribute("successMessage", "Modification effectuée !");
             } catch (Exception e) {
+                // En cas d'erreur, lancer une exception ServletException avec un message d'erreur
                 throw new ServletException("Erreur lors de l'enregistrement de l'utilisateur", e);
             }
         }
 
+        // Rediriger vers la page de compte après la modification
         response.sendRedirect(request.getContextPath() + "/jsp/account.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Transférer la requête à la page JSP du compte utilisateur
         request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);
     }
 }

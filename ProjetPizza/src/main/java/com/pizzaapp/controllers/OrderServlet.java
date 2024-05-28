@@ -10,52 +10,59 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Annotation pour indiquer que cette servlet est accessible via l'URL "/order"
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
 
+    // Méthode doPost pour gérer les requêtes POST
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("OrderServlet doPost method called."); // Debug message
+        System.out.println("OrderServlet doPost method called."); // Message de débogage
+
         try {
             List<Pizza> pizzas = new ArrayList<>();
             for (int i = 0; ; i++) {
+                // Récupérer les paramètres de la requête pour chaque pizza
                 String size = request.getParameter("pizza" + i + "Size");
-                if (size == null) break;
+                if (size == null) break; // Si aucune taille n'est trouvée, sortir de la boucle
+
                 String crust = request.getParameter("pizza" + i + "Crust");
                 String base = request.getParameter("pizza" + i + "Base");
 
+                // Récupérer les ingrédients de la pizza
                 List<Ingredient> ingredients = new ArrayList<>();
                 for (int j = 0; ; j++) {
                     String ingredient = request.getParameter("pizza" + i + "Ingredient" + j);
-                    if (ingredient == null) break;
-                    ingredients.add(new Ingredient(ingredient, "0")); // Replace "0" with the actual price if necessary
+                    if (ingredient == null) break; // Si aucun ingrédient n'est trouvé, sortir de la boucle
+                    ingredients.add(new Ingredient(ingredient, "0")); // Remplacer "0" par le prix réel si nécessaire
                 }
 
+                // Ajouter la pizza à la liste des pizzas
                 pizzas.add(new Pizza(size, crust, base, ingredients));
             }
 
-            // Generate the next orderId
+            // Générer le prochain identifiant de commande
             int orderId = Database.getNextOrderId();
             Order order = new Order(orderId, pizzas);
 
+            // Sauvegarder la commande dans la base de données
             Database.saveOrder(order);
 
+            // Répondre au client avec un message de confirmation
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("Commande confirmée et enregistrée avec succès.");
-            System.out.println("Order successfully saved."); // Confirmation message
+            System.out.println("Order successfully saved."); // Message de confirmation
 
         } catch (Exception e) {
-            // Handle exceptions
+            // Gérer les exceptions
             System.err.println("Error in OrderServlet: " + e.getMessage());
             e.printStackTrace();
-            throw new ServletException("Error saving order", e);
+            throw new ServletException("Erreur lors de l'enregistrement de la commande", e);
         }
     }
 }

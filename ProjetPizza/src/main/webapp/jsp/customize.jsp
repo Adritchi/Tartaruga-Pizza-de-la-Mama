@@ -9,9 +9,12 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    <!-- En-tête de la page avec le titre principal -->
     <div class="header">
         <h1>Customise ta propre Pizza</h1>
     </div>
+
+    <!-- Section pour saluer l'utilisateur s'il est connecté, sinon afficher les liens de connexion et d'inscription -->
     <div class="user-greeting">
         <%
             User user = (User) session.getAttribute("user");
@@ -28,18 +31,24 @@
             }
         %>
     </div>
+
+    <!-- Barre de navigation avec les liens vers les différentes sections du site -->
     <div class="navbar">
         <a href="home.jsp">Accueil</a>
         <a href="customize.jsp">Je personnalise ma pizza</a>
         <a href="account.jsp">Mon Compte</a>
     </div>
+
+    <!-- Conteneur principal de la page -->
     <div class="container">
         <div class="customization-container">
             <div class="customization-left">
                 <h2>Plus d'un Million de Possibilités</h2>
                 <div class="customization-details">
+                    <!-- Formulaire de personnalisation de la pizza -->
                     <form id="customize-form" action="customize" method="post">
-                            <div class="customization-group">
+                        <!-- Sélection de la taille de la pizza -->
+                        <div class="customization-group">
                             <h2>Taille</h2>
                             <div class="options">
                                 <% List<Size> sizes = Database.getSizes(); %>
@@ -58,6 +67,7 @@
                             </div>
                         </div>
                         
+                        <!-- Sélection de la pâte de la pizza -->
                         <div class="customization-group">
                             <h2>Pâte</h2>
                             <div class="dropdown">
@@ -77,6 +87,7 @@
                             </div>
                         </div>
                         
+                        <!-- Sélection de la sauce de la pizza -->
                         <div class="customization-group">
                             <h2>Sauce</h2>
                             <div class="dropdown">
@@ -96,6 +107,7 @@
                             </div>
                         </div>
                         
+                        <!-- Sélection des ingrédients pour la pizza -->
                         <div class="customization-group">
                             <h2>Ingrédients</h2>
                             <div class="customization-ingredients" id="ingredients-container">
@@ -115,6 +127,7 @@
                                 <% } %>
                             </div>
                         </div>
+                        <!-- Bouton pour ajouter la pizza personnalisée -->
                         <button type="submit" class="add-button" id="add-button" disabled>Ajouter</button>
                     </form>
                 </div>
@@ -123,7 +136,7 @@
             <div class="customization-center">
                 <h2>Prévisualisation de la Pizza</h2>
                 <div id="pizza-image" class="pizza-preview">
-                    <!-- JavaScript will dynamically update this -->
+                    <!-- JavaScript va mettre à jour dynamiquement cette section -->
                 </div>
             </div>
             <!-- Section 3: Détail de la commande -->
@@ -164,8 +177,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const confirmOrderButton = document.getElementById("confirm-order");
 
     let pizzas = [];
-    let totalPrice = 0; // Initialize total price
+    let totalPrice = 0; // Initialiser le prix total
 
+    // Fonction pour réinitialiser le formulaire
     function clearForm() {
         sizeOptions.forEach(option => option.checked = false);
         crustSelect.disabled = true;
@@ -181,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
         selectedIngredientsList.innerHTML = "";
     }
 
+    // Fonction pour calculer le prix de la pizza actuelle
     function calculateCurrentPizzaPrice() {
         let currentPizzaPrice = 0;
         const selectedCrust = crustSelect.options[crustSelect.selectedIndex];
@@ -209,11 +224,13 @@ document.addEventListener("DOMContentLoaded", function() {
         return currentPizzaPrice;
     }
 
+    // Fonction pour mettre à jour le prix de la pizza actuelle
     function updateCurrentPizzaPrice() {
         const currentPizzaPrice = calculateCurrentPizzaPrice();
         totalPriceElement.textContent = (totalPrice + currentPizzaPrice).toFixed(2) + " €";
     }
 
+    // Gestionnaire d'événements pour les changements dans le formulaire
     form.addEventListener("change", function() {
         const formData = new FormData(form);
         const size = formData.get("size");
@@ -251,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         pizzaImage.innerHTML = "";
 
+        // Fonction pour ajouter des images des ingrédients à la prévisualisation
         function appendImage(src, alt, zIndex) {
             const img = document.createElement("img");
             img.src = src;
@@ -306,8 +324,8 @@ document.addEventListener("DOMContentLoaded", function() {
         updateCurrentPizzaPrice();
     });
     
+    // Fonction pour mettre à jour la liste des pizzas commandées
     function updatePizzaList() {
-    	console.log(orderedPizzasList)
         orderedPizzasList.innerHTML = '';
         pizzas.forEach((pizza, index) => {
             const pizzaSummary = document.createElement("div");
@@ -323,6 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Gestionnaire d'événements pour la soumission du formulaire
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -342,34 +361,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
             pizzas.push(pizza);
 
-            // Add current pizza price to total price only once
+            // Ajouter le prix de la pizza actuelle au prix total une seule fois
             const currentPizzaPrice = calculateCurrentPizzaPrice();
             totalPrice += currentPizzaPrice;
 
-            console.log(pizzas);
             updatePizzaList();
 
-            // Reset only the display of the current pizza price
+            // Réinitialiser uniquement l'affichage du prix de la pizza actuelle
             totalPriceElement.textContent = totalPrice.toFixed(2) + " €";
 
             clearForm();
         }
     });
 
+    // Gestionnaire d'événements pour le bouton de nouvelle pizza
     newPizzaButton.addEventListener("click", function() {
         clearForm();
     });
 
+    // Gestionnaire d'événements pour confirmer la commande
     document.getElementById("confirm-order").addEventListener("click", function() {
-    	
         if (pizzas.length === 0) {
             alert("Veuillez ajouter au moins une pizza avant de confirmer la commande.");
             event.preventDefault();
             return;
         }
-    	
+
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/ProjetPizza/order", true);  // Corrigez l'URL ici
+        xhr.open("POST", "/ProjetPizza/order", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function() {
@@ -392,11 +411,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         xhr.send(formData.toString());
         pizzas = [];
-        totalPrice = 0; // Reset total price after order confirmation
-        updateCurrentPizzaPrice(); // Update displayed total price
+        totalPrice = 0; // Réinitialiser le prix total après confirmation de la commande
+        updateCurrentPizzaPrice(); // Mettre à jour le prix total affiché
         clearForm();
     });
 
+    // Ajouter des événements pour les sélecteurs et les cases à cocher des ingrédients pour mettre à jour le prix de la pizza actuelle
     const selects = document.querySelectorAll("select");
     selects.forEach(select => {
         select.addEventListener("change", function() {

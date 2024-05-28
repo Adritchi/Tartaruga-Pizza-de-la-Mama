@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    /* Utilisation de la police Arial, marges et paddings à zéro pour tout le document */
 }
 
 .header {
@@ -11,11 +12,13 @@ body {
     text-align: center;
     color: white;
     position: relative;
+    /* Image de fond centrée, texte centré, padding supérieur et inférieur, couleur de texte blanche */
 }
 
 .header h1 {
     margin: 0;
     font-size: 3em;
+    /* Enlève la marge, définit la taille de police */
 }
 
 .user-greeting {
@@ -25,11 +28,13 @@ body {
     font-size: 1.5em;
     font-weight: bold;
     color: white;
+    /* Positionnement absolu en haut à droite, police agrandie et en gras */
 }
 
 .greeting-text {
     font-size: 1.5em;
     font-weight: bold;
+    /* Texte de bienvenue en police agrandie et en gras */
 }
 
 .auth-link {
@@ -38,15 +43,18 @@ body {
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
+    /* Liens de connexion/déconnexion en police agrandie, blanche, sans soulignement, avec marges et texte en gras */
 }
 
 .auth-link:hover {
     text-decoration: underline;
+    /* Soulignement des liens au survol */
 }
 
 .navbar {
     text-align: center;
     margin: 20px 0;
+    /* Barre de navigation centrée avec marges verticales */
 }
 
 .navbar a {
@@ -57,15 +65,18 @@ body {
     padding: 10px 20px;
     background-color: #f8f9fa;
     border-radius: 5px;
+    /* Liens de navigation avec marges, sans soulignement, couleur de texte bleue, padding, fond gris clair et coins arrondis */
 }
 
 .navbar a:hover {
     background-color: #e2e6ea;
+    /* Couleur de fond des liens changée au survol */
 }
 
 .container {
     padding: 20px;
     text-align: center;
+    /* Conteneur principal avec padding et texte centré */
 }
 
 .account-form {
@@ -76,17 +87,20 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     text-align: left;
+    /* Formulaire de compte avec fond blanc, padding, marges automatiques pour centrer, bordures arrondies, ombre légère, largeur maximale et texte aligné à gauche */
 }
 
 .form-group {
     margin-bottom: 20px;
     text-align: center;
+    /* Groupe de formulaire avec marge inférieure et texte centré */
 }
 
 .form-group label {
     display: block;
     margin-bottom: 5px;
     text-align: left;
+    /* Étiquette de formulaire affichée en bloc, avec marge inférieure et texte aligné à gauche */
 }
 
 .form-control {
@@ -97,6 +111,7 @@ body {
     border-radius: 5px;
     margin: 0 auto;
     display: block;
+    /* Contrôles de formulaire avec largeur de 70%, padding, bordure grise, coins arrondis, marges automatiques et affichage en bloc */
 }
 
 .btn {
@@ -110,8 +125,10 @@ body {
     text-align: center;
     margin: 0 auto;
     display: inline-block;
+    /* Bouton avec largeur automatique, padding, couleur de fond bleue, texte blanc, sans bordure, coins arrondis, curseur pointeur, texte centré, marges automatiques et affichage en ligne */
 }
 
 .btn:hover {
     background-color: #0056b3;
+    /* Changement de couleur de fond du bouton au survol */
 }

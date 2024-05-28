@@ -12,10 +12,12 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    <!-- En-tête de la page avec le titre et les options de connexion/déconnexion -->
     <div class="header">
         <h1>Bienvenue à Tartaruga Della Pizza Della Mama !</h1>
         <div class="user-greeting">
             <%
+                // Récupérer l'utilisateur connecté à partir de la session
                 User user = (User) session.getAttribute("user");
                 if (user != null) {
             %>
@@ -31,11 +33,15 @@
             %>
         </div>
     </div>
+
+    <!-- Barre de navigation avec des liens vers différentes pages -->
     <div class="navbar">
-    <a href="home.jsp">Accueil</a>
-    <a href="customize.jsp">Je personnalise ma pizza</a>
-    <a href="account.jsp">Mon Compte</a>
-</div>
+        <a href="home.jsp">Accueil</a>
+        <a href="customize.jsp">Je personnalise ma pizza</a>
+        <a href="account.jsp">Mon Compte</a>
+    </div>
+
+    <!-- Contenu principal de la page d'accueil -->
     <div class="container">
         <div class="section">
             <h2>La meilleure Pizza Italienne !</h2>

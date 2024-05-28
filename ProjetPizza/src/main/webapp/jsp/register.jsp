@@ -12,10 +12,12 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsp/stylesregister.css">
 </head>
 <body>
+    <!-- En-tête de la page avec le titre et les options de connexion/déconnexion -->
     <div class="header">
         <h1>Inscription</h1>
         <div class="user-greeting">
             <%
+                // Récupérer l'utilisateur connecté à partir de la session
                 User user = (User) session.getAttribute("user");
                 if (user != null) {
             %>
@@ -31,14 +33,19 @@
             %>
         </div>
     </div>
+
+    <!-- Barre de navigation avec des liens vers différentes pages -->
     <div class="navbar">
         <a href="home.jsp">Accueil</a>
         <a href="customize.jsp">Je personnalise ma pizza</a>
         <a href="account.jsp">Mon Compte</a>
     </div>
+
+    <!-- Contenu principal de la page d'inscription -->
     <div class="container">
         <div class="register-form">
             <h2>Inscription</h2>
+            <!-- Formulaire d'inscription -->
             <form action="<%=request.getContextPath()%>/register" method="post">
                 <div class="form-group">
                     <label for="name">Nom :</label>
